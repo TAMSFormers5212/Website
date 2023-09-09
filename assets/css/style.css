@@ -4,7 +4,7 @@
 Dark Black: #1d1b1b
 Light Black: #312e2e
 
-Light-White Infused Green: #69c484s
+Light-White Infused Green: #69c484
 Bright Green: #00b135
 Slightly Darker Green: #017a25
 Even Darker Green: #016c21
@@ -15,6 +15,20 @@ Transparent Dark Green RGBA: #313d32
 /*--------------------------------------------------------------
 # General
 --------------------------------------------------------------*/
+
+/* Global Variables, can be used by using var(--name); */
+:root {
+  --Dark-Black: #1d1b1b;
+  --Light-Black: #312e2e;
+  
+  --Light-White-Infused-Green: #69c484;
+  --Bright-Green: #00b135;
+  --Slightly-Darker-Green: #017a25;
+  --Even-Darker-Green: #016c21;
+  --Transparent-Dark-Green: #313d32;
+  --Transparent-Dark-Green-RGBA: #313d32;
+}
+
 body {
   font-family: "Open Sans", sans-serif;
   color: #312e2e;
