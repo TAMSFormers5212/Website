@@ -1297,6 +1297,11 @@ section {
   color: #fff;
 }
 
+.pricing .buy-btn-lg {
+  padding: 16px 60px;
+  font-size: 20px;
+}
+
 @media (max-width: 992px) {
   .pricing .box {
     max-width: 60%;
@@ -1316,6 +1321,18 @@ section {
     max-width: 100%;
     margin: 0 auto 30px auto;
   }
+}
+
+/*--------------------------------------------------------------
+# Why Sponsor Us
+--------------------------------------------------------------*/
+.why-sponsor img {
+  max-width: 100%;
+  border-radius: 5px;
+}
+
+.why-sponsor p {
+  margin-bottom: 15px;
 }
 
 /*--------------------------------------------------------------
