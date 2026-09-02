@@ -10,7 +10,7 @@ npm run check
 
 ```
 src/content/team/members.yaml       # roster, every year
-src/content/team/groups.yaml        # team sub-sections (execs, TRS)
+src/content/team/groups.yaml        # team sub-sections (execs, committee heads)
 src/content/committees/*.md         # committee cards on the homepage
 src/content/sponsors/sponsors.yaml  # sponsors
 src/content/robots/*.md             # robots

@@ -59,16 +59,37 @@
 - id: hitaishi-chillara
   name: Hitaishi Chillara
   role: TAMS Repair Society Head
-  group: trs
+  group: committees
   year: 2025-2026
   bio: Hitaishi co-runs TAMS Repair Society, its monthly open house and the repair requests in between.
 
 - id: gregory-daley
   name: Gregory Daley
   role: TAMS Repair Society Head
-  group: trs
+  group: committees
   year: 2025-2026
   bio: Greg co-runs TAMS Repair Society and works through repairs with the people who bring them in.
+
+- id: siddharth-kakumanu
+  name: Siddharth Kakumanu
+  role: CAD Committee Head
+  group: committees
+  year: 2025-2026
+  bio: "Siddharth runs the CAD Committee: junior training and the team's Cadathons."
+
+- id: aron-ellias
+  name: Aron Ellias
+  role: Outreach Head
+  group: committees
+  year: 2025-2026
+  bio: Aron leads Outreach, working with the business team on sponsorships and community fundraising.
+
+- id: saachi-patil
+  name: Saachi Patil
+  role: Polygon Society Head
+  group: committees
+  year: 2025-2026
+  bio: Saachi heads the Polygon Society, the team's Blender modelling and animation group run with pROFILE.
 
 # ---- 2024-2025 ----
 
@@ -149,7 +170,7 @@
 - id: trs-murtaza-haque
   name: Murtaza Haque
   role: TRS
-  group: trs
+  group: committees
   year: 2024-2025
   photo: ../../assets/img/trs/murtaza-haque.jpg
   bio: >-
@@ -166,7 +187,7 @@
 - id: trs-ria-nair
   name: Ria Nair
   role: TRS
-  group: trs
+  group: committees
   year: 2024-2025
   photo: ../../assets/img/trs/ria-nair.jpg
   bio: I handle the logistics and design side of TAMS Repair Society.

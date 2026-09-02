@@ -8,9 +8,7 @@
     Each exec manages a separate area of the club, and together they keep the
     team operational.
 
-- id: trs
-  title: TAMS Repair Society
+- id: committees
+  title: Committee Heads
   order: 2
-  description: >-
-    The committee that repairs devices, vehicles, and instruments for other
-    TAMS students and runs workshops on how technology works.
+  description: The students who run each of the club's committees.
