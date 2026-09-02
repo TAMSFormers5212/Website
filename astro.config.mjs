@@ -2,12 +2,14 @@
 import { defineConfig, fontProviders } from 'astro/config';
 import icon from 'astro-icon';
 
-// The site deploys to GitHub Pages under the repository name, so every
-// generated URL must be prefixed with `base`. There is no CNAME in this repo;
-// if a custom domain is ever added, set `base: '/'` and update `site`.
+// SITE_URL origin, BASE_PATH path; workflow sets both from Settings > Pages
+// custom domain there = domain root; unset locally = /Website like production
+const site = process.env.SITE_URL || 'https://tamsformers5212.github.io';
+const base = (process.env.BASE_PATH ?? '/Website') || '/';
+
 export default defineConfig({
-  site: 'https://tamsformers5212.github.io',
-  base: '/Website',
+  site,
+  base,
   trailingSlash: 'always',
   integrations: [icon()],
 

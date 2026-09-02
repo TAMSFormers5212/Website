@@ -16,7 +16,7 @@ src/content/robots/*.md             # robots
 src/assets/img/                     # images
 src/styles/style.css                # styles
 src/pages/                          # routes
-public/*.html                       # old-URL redirects
+src/pages/[legacy].html.ts          # old-URL redirects
 ```
 
 ```yaml
@@ -65,9 +65,11 @@ mechanisms:
 push main -> .github/workflows/static.yml -> Pages
 ```
 
-```js
-// astro.config.mjs — no CNAME, so:
-base: '/Website'
+```bash
+# where it is served from; the workflow reads Settings > Pages and sets both
+npm run build                                       # tamsformers5212.github.io/Website/
+SITE_URL=https://robotics.example.org BASE_PATH= npm run build   # domain root
+# other host: repo variable SITE_URL=https://robotics.example.org
 ```
 
 ```astro
