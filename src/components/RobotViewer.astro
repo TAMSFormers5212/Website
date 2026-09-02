@@ -1,0 +1,253 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+/**
+ * Lazy 3D model viewer. Shows the poster until the visitor clicks "View in
+ * 3D" (or, on desktop, scrolls it half into view), then loads three.js and
+ * the GLB on demand. A missing model leaves the poster in place.
+ */
+interface Props {
+  /** URL of the .glb, already passed through url(). */
+  model: string;
+  poster: ImageMetadata;
+  alt: string;
+}
+
+const { model, poster, alt } = Astro.props;
+---
+
+<div class="robot-viewer" data-model={model}>
+  <Image src={poster} alt={alt} width={1200} loading="lazy" />
+  <canvas aria-hidden="true"></canvas>
+  <i class="bar"></i>
+  <button type="button">View in 3D</button>
+</div>
+
+<script>
+  import type { Mesh, Vector3, WebGLRenderer } from 'three';
+  import type { GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
+
+  const desktop = matchMedia('(min-width: 992px)');
+  const stillness = matchMedia('(prefers-reduced-motion: reduce)');
+
+  async function start(root: HTMLElement): Promise<void> {
+    const model = root.dataset.model!;
+    const canvas = root.querySelector('canvas')!;
+    const button = root.querySelector('button')!;
+    const bail = (why: string): void => {
+      console.warn(`RobotViewer: ${why}`);
+      button.hidden = true;
+      root.classList.remove('loading');
+    };
+
+    // Cheap existence check before pulling in three.js.
+    const head = await fetch(model, { method: 'HEAD' }).catch(() => null);
+    if (!head?.ok) return bail(`no model at ${model}`);
+    root.classList.add('loading');
+
+    const [THREE, { GLTFLoader }, { OrbitControls }] = await Promise.all([
+      import('three'),
+      import('three/examples/jsm/loaders/GLTFLoader.js'),
+      import('three/examples/jsm/controls/OrbitControls.js'),
+    ]);
+
+    let renderer: WebGLRenderer;
+    try {
+      renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    } catch {
+      return bail('WebGL unavailable');
+    }
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+
+    const scene = new THREE.Scene();
+    const key = new THREE.DirectionalLight(0xffffff, 2.5);
+    key.position.set(3, 5, 4);
+    const fill = new THREE.DirectionalLight(0xdfe8ff, 1);
+    fill.position.set(-4, 2, -3);
+    scene.add(new THREE.HemisphereLight(0xffffff, 0x303838, 1.2), key, fill);
+
+    const camera = new THREE.PerspectiveCamera(35, 1.6, 0.01, 100);
+    const controls = new OrbitControls(camera, canvas);
+    Object.assign(controls, {
+      enableDamping: true,
+      enablePan: false,
+      autoRotate: !stillness.matches,
+      autoRotateSpeed: 1,
+      maxPolarAngle: Math.PI * 0.55, // no looking up from underneath
+    });
+    let idle: ReturnType<typeof setTimeout>;
+    controls.addEventListener('start', () => {
+      controls.autoRotate = false;
+      clearTimeout(idle);
+    });
+    controls.addEventListener('end', () => {
+      idle = setTimeout(() => (controls.autoRotate = !stillness.matches), 3000);
+    });
+
+    const gltf = await new Promise<GLTF>((resolve, reject) =>
+      new GLTFLoader().load(
+        model,
+        resolve,
+        (e) => root.style.setProperty('--p', String(e.total ? e.loaded / e.total : 0.5)),
+        reject
+      )
+    ).catch(() => null);
+    if (!gltf) {
+      renderer.dispose();
+      return bail(`could not parse ${model}`);
+    }
+
+    // Without an environment map, fully metallic surfaces render black; cap
+    // metalness so the hemisphere fill still reaches them.
+    gltf.scene.traverse((node) => {
+      const material = (node as Mesh).material;
+      if (material instanceof THREE.MeshStandardMaterial) material.metalness = Math.min(material.metalness, 0.5);
+    });
+
+    const box = new THREE.Box3().setFromObject(gltf.scene);
+    const size = box.getSize(new THREE.Vector3());
+    gltf.scene.position.sub(box.getCenter(new THREE.Vector3()));
+    scene.add(gltf.scene);
+
+    const resize = (): void => {
+      const { clientWidth: w, clientHeight: h } = root;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    };
+    new ResizeObserver(resize).observe(root);
+    resize();
+
+    // Three-quarter view from slightly above, aimed a little above centre so
+    // the model sits low; back off until the sampled silhouette fills 80% of the frame.
+    const { degToRad } = THREE.MathUtils;
+    const dir = new THREE.Vector3().setFromSphericalCoords(1, degToRad(70), degToRad(35));
+    controls.target.set(0, size.y * 0.08, 0);
+    gltf.scene.updateMatrixWorld(true);
+    const points: Vector3[] = [];
+    gltf.scene.traverse((node) => {
+      const attribute = (node as Mesh).geometry?.getAttribute('position');
+      if (!attribute) return;
+      const stride = Math.max(1, Math.floor(attribute.count / 4000));
+      for (let i = 0; i < attribute.count; i += stride)
+        points.push(new THREE.Vector3().fromBufferAttribute(attribute, i).applyMatrix4(node.matrixWorld));
+    });
+    const projected = new THREE.Vector3();
+    let distance = size.length();
+    for (let i = 0; i < 4; i++) {
+      camera.position.copy(dir).multiplyScalar(distance).add(controls.target);
+      camera.lookAt(controls.target);
+      camera.updateMatrixWorld();
+      let extent = 0;
+      for (const point of points) {
+        projected.copy(point).project(camera);
+        extent = Math.max(extent, Math.abs(projected.x), Math.abs(projected.y));
+      }
+      distance *= extent / 0.8;
+    }
+    camera.near = distance / 100;
+    camera.far = distance * 10;
+    camera.updateProjectionMatrix();
+    controls.minDistance = distance * 0.5;
+    controls.maxDistance = distance * 2;
+
+    const frame = (): void => {
+      controls.update();
+      renderer.render(scene, camera);
+    };
+    frame();
+    root.classList.replace('loading', 'ready');
+    button.hidden = true;
+
+    // Only burn GPU while on screen.
+    new IntersectionObserver(([entry]) => renderer.setAnimationLoop(entry.isIntersecting ? frame : null)).observe(root);
+  }
+
+  for (const root of document.querySelectorAll<HTMLElement>('.robot-viewer')) {
+    const button = root.querySelector('button')!;
+    const once = (): void => {
+      watcher.disconnect();
+      button.removeEventListener('click', once);
+      start(root);
+    };
+    const watcher = new IntersectionObserver(
+      ([entry]) => entry.isIntersecting && desktop.matches && once(),
+      { threshold: 0.5 }
+    );
+    button.addEventListener('click', once);
+    watcher.observe(root);
+  }
+</script>
+
+<style>
+  .robot-viewer {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.03);
+  }
+  img,
+  canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  img {
+    object-fit: cover;
+    transition: opacity 0.6s;
+  }
+  .ready img {
+    opacity: 0;
+    pointer-events: none;
+  }
+  canvas {
+    cursor: grab;
+  }
+  canvas:active {
+    cursor: grabbing;
+  }
+  .bar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 3px;
+    background: var(--Bright-Green);
+    transform: scaleX(var(--p, 0));
+    transform-origin: left;
+    transition: transform 0.2s;
+    opacity: 0;
+  }
+  .loading .bar {
+    opacity: 1;
+  }
+  button {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 0.7rem 1.6rem;
+    border-radius: 999px;
+    border: 2px solid var(--Bright-Green);
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    font: 600 0.9rem/1 var(--font-jost), sans-serif;
+    letter-spacing: 0.5px;
+    backdrop-filter: blur(4px);
+    transition: background 0.3s;
+  }
+  button:hover,
+  button:focus-visible {
+    background: var(--Bright-Green);
+  }
+  .loading button {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+</style>

@@ -1,0 +1,75 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import Base from '../layouts/Base.astro';
+import { url } from '../lib/url';
+import serviceShowcase from '../assets/img/outreach/service-showcase.webp';
+import trifold from '../assets/img/outreach/trifold-table.jpg';
+import goKartPrototype from '../assets/img/outreach/go-kart-prototype.jpg';
+import goKartTeam from '../assets/img/outreach/go-kart-team.webp';
+
+type Photo = { src: ImageMetadata; alt: string };
+type Block = { title: string; body: string; photos: Photo[]; cta?: { label: string; href: string } };
+
+const blocks: Block[] = [
+  {
+    title: 'Sponsorship and community fundraising',
+    body:
+      'Our Outreach committee works with the business team to fund the season. They contact TAMS alumni and local businesses about sponsorship, run fundraisers in the Denton community, and make the materials that represent the team at events like the Service Showcase. If you would like to support us, our sponsorship tiers are on the donations page.',
+    photos: [
+      { src: serviceShowcase, alt: 'Visitors around the TAMSformers table at the Service Showcase' },
+      { src: trifold, alt: 'The team trifold and handouts on a table at an outreach event' },
+    ],
+    cta: { label: 'Sponsor the team', href: url('/donations/') },
+  },
+  {
+    title: 'The go-kart project',
+    body:
+      'A student-built electric go-kart that we bring to outreach events. The first prototype was a plywood deck on a bare chassis with a folding chair for a seat, and the team has been building it up from there. The deck has since been covered in signatures from the people who have seen it, and it gives younger students something they can sit in and ask questions about.',
+    photos: [
+      { src: goKartPrototype, alt: 'Go-kart prototype: a folding chair bolted to a plywood deck over the chassis' },
+      { src: goKartTeam, alt: 'Four students behind the signed plywood deck of the go-kart chassis' },
+    ],
+  },
+];
+---
+
+<Base
+  title="Outreach | TAMSformers"
+  description="How FRC Team 5212 raises support and shows its work around Denton: sponsorships, community fundraising, and the student-built go-kart."
+  heading="Outreach"
+  intro="How the team funds the season and shows its work beyond the Makerspace."
+>
+  <main id="main">
+    {
+      blocks.map((block, index) => (
+        <section class:list={['outreach', index % 2 === 1 && 'section-dark']}>
+          <div class="container">
+            <div class="row align-items-center gy-4 gx-lg-5">
+              <div class:list={['col-lg-6', index % 2 === 1 && 'order-lg-2']} data-aos="fade-up">
+                <h3 class="mb-3">{block.title}</h3>
+                <p class={block.cta && 'mb-4'}>{block.body}</p>
+                {block.cta && (
+                  <a class="button ghost" href={block.cta.href}>
+                    {block.cta.label}
+                  </a>
+                )}
+              </div>
+              <div class:list={['col-lg-6', index % 2 === 1 && 'order-lg-1']} data-aos="fade-up" data-aos-delay="100">
+                <div class="row g-3 gallery">
+                  {block.photos.map((photo) => (
+                    <div class="col-6">
+                      <a href={photo.src.src} class="frame portfolio-lightbox" data-gallery="outreach" title={photo.alt}>
+                        <Image src={photo.src} alt={photo.alt} width={640} loading="lazy" />
+                      </a>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      ))
+    }
+  </main>
+</Base>

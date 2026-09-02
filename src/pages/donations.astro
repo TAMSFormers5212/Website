@@ -6,15 +6,12 @@ import { url } from '../lib/url';
 import type { NavLink } from '../lib/nav';
 import sponsorInfo from '../assets/img/sponsor-info.png';
 
-// This page carries its own in-page nav rather than the site-wide one.
 const navLinks: NavLink[] = [
-  { label: 'Home', href: '#sponsor-intro' },
   { label: 'Sponsorship Tiers', href: '#tiers' },
   { label: 'Why Sponsor Us?', href: '#why-sponsor' },
-  { label: 'Back to TAMSformers Home Page', href: url('/') },
+  { label: 'Back to Home', href: url('/') },
 ];
 
-// The full sponsorship write-up lives in a shared Google Doc.
 const detailsDoc =
   'https://docs.google.com/document/d/10j5uqoAWN2g2Ksszawrct1-dpI4DrzXAJVO0XPR2K5U/edit?usp=sharing';
 
@@ -50,7 +47,6 @@ const tiers = [
   },
 ];
 
-// Not a priced tier: arranged case by case, so it sits below the grid.
 const custom = {
   name: 'Custom Sponsorship',
   note: 'Any amount, or in-kind support',
@@ -67,46 +63,30 @@ const custom = {
   description="Support TAMSformers Robotics Team 5212 through our sponsorship tiers."
   navLinks={navLinks}
   navCta={{ label: 'Donate', href: '#tiers' }}
+  heading="Sponsor TAMSformers"
+  intro="TAMSformers is a high school FRC robotics team based in Denton, TX. We build competitive robots, mentor younger students, and inspire the next generation of engineers. Your sponsorship directly funds robot parts, competition entry fees, travel, and STEM outreach programs in our community."
 >
   <main id="main">
-    <section id="sponsor-intro" class="cta">
-      <div class="container" data-aos="zoom-in">
-        <div class="col-lg-9 text-center text-lg-start">
-          <h3>Sponsor TAMSformers</h3>
-          <p>
-            TAMSformers is a high school FRC robotics team based in Denton, TX. We build competitive robots, mentor
-            younger students, and inspire the next generation of engineers. Your sponsorship directly funds robot
-            parts, competition entry fees, travel, and STEM outreach programs in our community.
-          </p>
-          <p>
-            We offer several sponsorship tiers to support our robotics team. Each tier comes with increasing
-            visibility and engagement benefits. Choose the tier that fits your organization best.
-          </p>
-        </div>
-      </div>
-    </section>
-
     <section id="tiers" class="pricing">
-      <div class="container" data-aos="fade-up">
-        <div class="section-title">
+      <div class="container">
+        <div class="section-title" data-aos="fade-up">
           <h2>Sponsorship Tiers</h2>
           <p>
-            Here are our different sponsorship plans and the benefits of each. Click below to learn more about our
-            sponsorship options.
+            Each tier comes with increasing visibility and engagement benefits. Choose the tier that fits your
+            organization best.
           </p>
         </div>
 
-        <div class="row justify-content-center">
+        <div class="row g-4 justify-content-center">
           {
             tiers.map((tier, index) => (
-              <div class="col-lg-3 col-md-6 mt-4 mt-lg-0 d-flex" data-aos="fade-up" data-aos-delay={100 * (index + 1)}>
-                <div class="box">
+              <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay={100 * index}>
+                <div class="tier panel">
                   <h3>{tier.name}</h3>
-                  <h4>
-                    <sup>$</sup>
-                    {tier.amount}
+                  <div class="price">
+                    <sup>$</sup>{tier.amount}
                     <span>per month</span>
-                  </h4>
+                  </div>
                   <ul>
                     {tier.benefits.map((benefit) => (
                       <li>
@@ -118,14 +98,11 @@ const custom = {
               </div>
             ))
           }
-        </div>
-
-        <div class="row justify-content-center">
-          <div class="col-lg-10" data-aos="fade-up" data-aos-delay="500">
-            <div class="box box-custom">
+          <div class="col-lg-10" data-aos="fade-up" data-aos-delay="200">
+            <div class="tier custom panel">
               <h3>{custom.name}</h3>
-              <h4 class="custom-amount">{custom.note}</h4>
-              <ul class="custom-benefits">
+              <div class="price">{custom.note}</div>
+              <ul>
                 {
                   custom.benefits.map((benefit) => (
                     <li>
@@ -134,46 +111,40 @@ const custom = {
                   ))
                 }
               </ul>
-              <a href={url('/#contact')} class="buy-btn">Contact Us</a>
+              <a href={url('/#contact')} class="button ghost">Contact Us</a>
             </div>
           </div>
         </div>
 
-        <div class="text-center mt-4" data-aos="fade-up" data-aos-delay="600">
-          <a href={detailsDoc} target="_blank" rel="noopener" class="buy-btn buy-btn-lg">More Details</a>
+        <div class="text-center mt-5" data-aos="fade-up">
+          <a href={detailsDoc} target="_blank" rel="noopener" class="button primary">More Details</a>
         </div>
       </div>
     </section>
 
-    <section id="why-sponsor" class="why-sponsor section-bg">
-      <div class="container" data-aos="fade-up">
-        <div class="section-title"><h2>Why Sponsor Us?</h2></div>
+    <section id="why-sponsor" class="why-sponsor section-dark">
+      <div class="container">
+        <div class="section-title" data-aos="fade-up"><h2>Why Sponsor Us?</h2></div>
 
-        <div class="row align-items-center">
-          <div class="col-lg-6" data-aos="fade-right" data-aos-delay="100">
-            <Image
-              src={sponsorInfo}
-              alt="Sponsorship information: donation levels and the benefits included at each level"
-              class="img-fluid"
-              loading="eager"
-            />
+        <div class="row align-items-center gy-4">
+          <div class="col-lg-5" data-aos="fade-up">
+            <div class="panel">
+              <Image
+                src={sponsorInfo}
+                alt="Sponsorship information: donation levels and the benefits included at each level"
+                loading="lazy"
+              />
+            </div>
           </div>
-          <div class="col-lg-6" data-aos="fade-left" data-aos-delay="200">
+          <div class="col-lg-7" data-aos="fade-up" data-aos-delay="100">
             <p>
-              Sponsoring TAMSformers is an investment in the future of STEM education. Our team of dedicated high
-              school students designs, builds, and programs a competitive robot each season while developing
-              real-world engineering, teamwork, and leadership skills.
+              TAMSformers is the only robotics team in Denton county, and we strive to represent the North Texas
+              region with the best possible robot every year. Our very talented team members dedicate months preparing
+              for the season, but recently we have had less money for parts and tools that can make our robot the best
+              possible. We hope you will make a contribution towards our cause, all proceeds go directly to us through
+              the UNT Foundation.
             </p>
-            <p>
-              Your sponsorship helps us cover competition entry fees, robot parts and materials, travel expenses, and
-              community outreach programs. In return, your organization gains visibility among students, families,
-              educators, and the broader FRC robotics community.
-            </p>
-            <p>
-              We are proud to partner with organizations that share our passion for engineering, innovation, and
-              empowering the next generation of problem-solvers.
-            </p>
-            <p><strong>Click "More Details" above to view our full sponsorship document.</strong></p>
+            <p class="mt-4"><a href={detailsDoc} target="_blank" rel="noopener" class="button light">Full sponsorship document</a></p>
           </div>
         </div>
       </div>

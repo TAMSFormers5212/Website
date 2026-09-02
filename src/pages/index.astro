@@ -1,33 +1,51 @@
 ---
 import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
 import { Image } from 'astro:assets';
 import { Icon } from 'astro-icon/components';
 import Base from '../layouts/Base.astro';
 import MemberCard from '../components/MemberCard.astro';
 import SponsorGrid from '../components/SponsorGrid.astro';
 import RobotCard from '../components/RobotCard.astro';
+import RobotViewer from '../components/RobotViewer.astro';
 import { url } from '../lib/url';
+import { currentYear, socials } from '../lib/site';
 import logo from '../assets/img/logo.png';
-import featuredRobotImage from '../assets/img/robots/2024/crosshair-5.png';
+import compPhoto from '../assets/img/events/competition-2025.webp';
+import serviceShowcase from '../assets/img/outreach/service-showcase.webp';
+import goKartTeam from '../assets/img/outreach/go-kart-team.webp';
+import trifoldTable from '../assets/img/outreach/trifold-table.jpg';
 
-// One block per group from groups.yaml, in its `order`, each listing its
-// members alphabetically. Groups with nobody in them are not shown.
+type Member = CollectionEntry<'team'>;
+const byName = (a: Member, b: Member) => a.data.name.localeCompare(b.data.name);
+
 const allMembers = await getCollection('team');
-const teamGroups = (await getCollection('teamGroups'))
-  .sort((a, b) => a.data.order - b.data.order)
+const groups = (await getCollection('teamGroups')).sort((a, b) => a.data.order - b.data.order);
+const groupOrder = new Map(groups.map((group, index) => [group.id, index]));
+const teamGroups = groups
   .map((group) => ({
     ...group.data,
     members: allMembers
-      .filter((member) => member.data.group.id === group.id)
-      .sort((a, b) => a.data.name.localeCompare(b.data.name)),
+      .filter((member) => member.data.year === currentYear && member.data.group.id === group.id)
+      .sort(byName),
   }))
   .filter((group) => group.members.length > 0);
+
+// newest year first, then group order, then name
+const alumni = [...new Set(allMembers.filter((m) => m.data.year !== currentYear).map((m) => m.data.year))]
+  .sort((a, b) => b.localeCompare(a))
+  .map((year) => ({
+    year,
+    members: allMembers
+      .filter((member) => member.data.year === year)
+      .sort((a, b) => groupOrder.get(a.data.group.id)! - groupOrder.get(b.data.group.id)! || byName(a, b)),
+  }));
+
+const committees = (await getCollection('committees')).sort((a, b) => a.data.order - b.data.order);
 const sponsors = await getCollection('sponsors');
 const robots = (await getCollection('robots')).sort((a, b) => a.data.order - b.data.order);
 const featured = robots.find((robot) => robot.data.featured) ?? robots[0];
 
-// One card per photo, so the grid matches the old layout while staying
-// generated from the robots collection.
 const robotCards = robots.flatMap((robot) =>
   robot.data.images.map((image, index) => ({
     image,
@@ -38,41 +56,27 @@ const robotCards = robots.flatMap((robot) =>
     filter: robot.data.filter,
   }))
 );
-
 const filters = ['*', ...new Set(robots.map((robot) => robot.data.filter))];
-
-const trsLinks = [
-  {
-    label: 'Get your item repaired!',
-    href: 'https://docs.google.com/forms/d/e/1FAIpQLSekf8HgNY6VQIsf2Dfn8qhF3Trr5o-nQNK2S_TvAyl5uLDYXw/viewform',
-  },
-  {
-    label: 'Become a member!',
-    href: 'https://docs.google.com/forms/d/e/1FAIpQLSc1YrbDhu5gl4of3tgdUR-SnJRYbKFE94bndurHqZQMls6eKA/viewform',
-  },
-];
-
 ---
 
 <Base>
-  <section id="hero" class="d-flex align-items-center">
+  <section id="hero">
+    <div class="hero-bg" data-parallax="0.3" data-parallax-cover>
+      <Image src={compPhoto} alt="" width={1920} loading="eager" />
+    </div>
     <div class="container">
-      <div class="row">
-        <div
-          class="col-lg-6 d-flex flex-column justify-content-center pt-4 pt-lg-0 order-2 order-lg-1"
-          data-aos="fade-up"
-          data-aos-delay="200"
-        >
+      <div class="row align-items-center">
+        <div class="col-lg-6 order-2 order-lg-1" data-aos="fade-up" data-aos-delay="200">
           <h1>FRC 5212</h1>
           <h2>Community-Driven, Powerful Engineering</h2>
-          <div class="d-flex justify-content-center justify-content-lg-start">
-            <a href="#about" class="btn-get-started scrollto">Get Started</a>
+          <div class="hero-actions">
+            <a href="#about" class="button primary scrollto">Get Started</a>
             <a href="https://youtu.be/VZ1Q6YZvm3k" class="glightbox btn-watch-video">
               <Icon name="bi:play-circle" /><span>Watch Video</span>
             </a>
           </div>
         </div>
-        <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-in" data-aos-delay="200">
+        <div class="col-lg-6 order-1 order-lg-2 hero-img text-center" data-aos="fade-up">
           <Image src={logo} alt="TAMSformers team logo" width={500} class="img-fluid animated" loading="eager" />
         </div>
       </div>
@@ -81,24 +85,30 @@ const trsLinks = [
 
   <main id="main">
     <section id="about" class="about">
-      <div class="container" data-aos="fade-up">
-        <div class="section-title"><h2>About Us</h2></div>
+      <div class="container">
+        <div class="section-title" data-aos="fade-up"><h2>About Us</h2></div>
 
-        <div class="row content">
-          <div class="col-lg-6">
+        <div class="row content align-items-center gy-4">
+          <div class="col-lg-6" data-aos="fade-up">
+            <div class="photo-frame">
+              <Image src={goKartTeam} alt="Four team members with the signed go-kart chassis" width={720} loading="lazy" />
+            </div>
+          </div>
+          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
             <p>
-              We are FRC 5212, otherwise known as TAMSformers Robotics! This year, we competed at the Texas district
-              FRC competition in Fort Worth. We are a highly competitive and talented team from North Texas seeking
-              funding. Visit our <a href={url('/donations/')}>Donation section</a> to learn more!
+              We are FRC 5212, otherwise known as TAMSformers Robotics! We are the robotics team of the Texas Academy of
+              Mathematics and Science and the only robotics team in Denton county, competing in the FIRST Robotics
+              Competition. Each season our members spend months designing, building and programming a new robot, and
+              along the way we teach everything from CAD and build to marketing and business. This year, we competed at
+              the Texas district FRC competition in Fort Worth. We are a highly competitive and talented team from North
+              Texas seeking funding. Visit our <a href={url('/donations/')}>Donation section</a> to learn more!
             </p>
             <ul>
               <li><Icon name="ri:check-double-line" /> FRC Worlds in 2014, 2015, and 2018</li>
               <li><Icon name="ri:check-double-line" /> Finalists at both Waco and Dallas District events</li>
               <li><Icon name="ri:check-double-line" /> District Championship in 2024</li>
             </ul>
-          </div>
-          <div class="col-lg-6 pt-4 pt-lg-0">
-            <p>
+            <p class="mb-4">
               All of our team members are students of the Texas Academy of Math and Science, a public early college
               STEM program in Denton at the University of North Texas. Most members go on to top universities like
               Georgia Tech, UT Austin, and UMich.
@@ -107,34 +117,26 @@ const trsLinks = [
               href="https://www.facebook.com/groups/3458577824404005"
               target="_blank"
               rel="noopener"
-              class="btn-learn-more">Join Our Facebook Group!</a
+              class="button ghost">Join Our Facebook Group</a
             >
           </div>
         </div>
       </div>
     </section>
 
-    <section id="clients" class="clients section-bg">
+    <section id="robot" class="robot section-dark">
       <div class="container">
-        <div class="section-title">
-          <h2>Sponsors</h2>
-          <p>
-            We are incredibly grateful for our sponsors. They have made it possible for us to achieve what we have.
-          </p>
+        <div class="section-title" data-aos="fade-up">
+          <h2>This Year's Robot</h2>
+          <p>Spin it around, open a mechanism, and see what the team built this season.</p>
         </div>
-        <SponsorGrid sponsors={sponsors} />
-      </div>
-    </section>
-
-    <section id="why-us" class="why-us section-bg">
-      <div class="container-fluid" data-aos="fade-up">
-        <div class="row">
-          <div class="col-lg-7 d-flex flex-column justify-content-center align-items-stretch order-2 order-lg-1">
+        <div class="row align-items-center gy-5">
+          <div class="col-lg-6 order-2 order-lg-1" data-aos="fade-up">
             <div class="content">
-              <h3>{featured.data.year} Robot: <strong>{featured.data.name}</strong></h3>
+              {featured.data.name !== `${featured.data.year} Robot` && <span class="eyebrow">{featured.data.year} Robot</span>}
+              <h3><strong>{featured.data.name}</strong></h3>
               <p>{featured.data.summary}</p>
             </div>
-
             <div class="accordion-list">
               <ul>
                 {
@@ -142,7 +144,7 @@ const trsLinks = [
                     <li>
                       <a
                         data-bs-toggle="collapse"
-                        class={index === 0 ? 'collapse' : 'collapsed'}
+                        class={index === 0 ? '' : 'collapsed'}
                         data-bs-target={`#accordion-list-${index + 1}`}
                       >
                         <span>{String(index + 1).padStart(2, '0')}</span> {mechanism.title}
@@ -161,34 +163,37 @@ const trsLinks = [
                 }
               </ul>
             </div>
+            <div class="action-links mt-4">
+              <a href={url(`/robots/${featured.id}/`)} class="button ghost">More about {featured.data.name}</a>
+            </div>
           </div>
-
-          <div
-            class="col-lg-5 align-items-stretch order-1 order-lg-2 img"
-            style={`background-image: url("${featuredRobotImage.src}");`}
-            data-aos="zoom-in"
-            data-aos-delay="150"
-          >
-            &nbsp;
+          <div class="col-lg-6 order-1 order-lg-2" data-aos="fade-up" data-aos-delay="100">
+            <div class="robot-stage">
+              <div class="robot-card" data-parallax="-0.06" data-parallax-min="768">
+                <div class="robot-glow"></div>
+                <RobotViewer model={url('/robot.glb')} poster={featured.data.images[0]} alt={`${featured.data.name} in 3D`} />
+              </div>
+              <p class="robot-hint">Drag to rotate, scroll to zoom</p>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
     <section id="portfolio" class="portfolio">
-      <div class="container" data-aos="fade-up">
-        <div class="section-title">
+      <div class="container">
+        <div class="section-title" data-aos="fade-up">
           <h2>More Robots</h2>
-          <p>Here are some more pictures of the previous robots that we have made!</p>
+          <p>Every robot the team has competed with, season by season.</p>
         </div>
 
-        <div id="portfolio-filters" class="d-flex justify-content-center" data-aos="fade-up" data-aos-delay="100">
+        <div id="portfolio-filters" data-aos="fade-up">
           {
             filters.map((filter) => (
               <button
                 type="button"
                 data-filter={filter}
-                class={filter === '*' ? 'filter-active' : ''}
+                class:list={['button small ghost', filter === '*' && 'active']}
                 aria-pressed={filter === '*' ? 'true' : 'false'}
               >
                 {filter === '*' ? 'All' : filter}
@@ -197,35 +202,88 @@ const trsLinks = [
           }
         </div>
 
-        <div class="row portfolio-container" data-aos="fade-up" data-aos-delay="200">
+        <div class="row g-4 portfolio-container">
           {robotCards.map((card) => <RobotCard {...card} />)}
         </div>
       </div>
     </section>
 
-    <section id="cta" class="cta">
-      <div class="container" data-aos="zoom-in">
-        <div class="row">
-          <div class="col-lg-9 text-center text-lg-start">
-            <h3>Volunteering and Outreach</h3>
-            <p>
-              Beyond competition, our members give their time to the people around them. Through the TAMS Repair
-              Society we fix devices, vehicles, and instruments for other TAMS students at no charge, and we run
-              workshops for anyone who wants to understand how their technology actually works. We are also working
-              to bring presentations and demonstrations out to local middle schools, so younger students can see
-              engineering up close well before they have to choose a path.
-            </p>
+    <section id="committees" class="committees section-dark">
+      <div class="container">
+        <div class="section-title" data-aos="fade-up">
+          <h2>Committees</h2>
+          <p>Smaller groups inside the club, each run by a committee head, that anyone on the team can join.</p>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+          {
+            committees.map((committee, index) => (
+              <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay={100 * (index % 3)}>
+                <div class="committee panel">
+                  {committee.data.photo ? (
+                    <div class:list={['frame', { contain: committee.data.photo.height > committee.data.photo.width }]}>
+                      <Image src={committee.data.photo} alt={`${committee.data.name} project`} width={640} loading="lazy" />
+                    </div>
+                  ) : (
+                    <div class="frame tile"><Icon name={committee.data.icon ?? 'bi:people'} /></div>
+                  )}
+                  <h3>{committee.data.name}</h3>
+                  {committee.data.heads.length > 0 && (
+                    <div class="heads">
+                      <strong>{committee.data.heads.length > 1 ? 'Heads' : 'Head'}:</strong>{' '}
+                      {committee.data.heads.join(', ')}
+                    </div>
+                  )}
+                  <p>{committee.data.summary}</p>
+                  {committee.data.links.length > 0 && (
+                    <div class="action-links">
+                      {committee.data.links.map((link) => (
+                        <a href={link.href} target="_blank" rel="noopener" class="button small ghost">
+                          {link.label}
+                        </a>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section id="outreach" class="band">
+      <div class="band-bg" data-parallax="0.25" data-parallax-min="768" data-parallax-cover>
+        <Image src={serviceShowcase} alt="" width={1920} loading="lazy" />
+      </div>
+      <div class="container">
+        <div class="row align-items-center gy-4">
+          <div class="col-lg-5" data-aos="fade-up">
+            <div class="photo-frame">
+              <Image
+                src={trifoldTable}
+                alt="The TAMSformers trifold and robot chassis on the outreach table"
+                width={720}
+                loading="lazy"
+              />
+            </div>
           </div>
-          <div class="col-lg-3 cta-btn-container text-center">
-            <a class="cta-btn align-middle scrollto" href="#trs">Our Committees</a>
+          <div class="col-lg-7" data-aos="fade-up" data-aos-delay="100">
+            <h3>Outreach</h3>
+            <p class="mb-4">
+              Beyond competition, the team goes out into the Denton community: our Outreach committee works with the
+              business team on sponsorships and fundraising, sets up at showcases and school events, and brings along
+              things we have built, like our student-made electric go-kart, so people can see the work up close.
+            </p>
+            <a class="button light" href={url('/outreach/')}>See our outreach</a>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="team" class="team section-bg">
-      <div class="container" data-aos="fade-up">
-        <div class="section-title">
+    <section id="team" class="team">
+      <div class="container">
+        <div class="section-title" data-aos="fade-up">
           <h2>Team</h2>
           <p>The people who run the club and its committees.</p>
         </div>
@@ -233,108 +291,107 @@ const trsLinks = [
         {
           teamGroups.map((group) => (
             <div class="team-group">
-              <h3>{group.title}</h3>
-              {group.description && <p class="team-group-description">{group.description}</p>}
-              <div class="row gy-4">
+              <h3 class="subheading" data-aos="fade-up">{group.title}</h3>
+              {group.description && <p data-aos="fade-up">{group.description}</p>}
+              <div class="row g-4 justify-content-center">
                 {group.members.map((member, index) => (
-                  <div class="col-lg-6">
-                    <MemberCard member={member.data} delay={100 * ((index % 2) + 1)} />
+                  <div class="col-lg-4 col-md-6">
+                    <MemberCard member={member.data} delay={100 * (index % 3)} />
                   </div>
                 ))}
               </div>
             </div>
           ))
         }
+
+        {
+          alumni.length > 0 && (
+            <>
+              <div class="text-center mt-5" data-aos="fade-up">
+                <button
+                  type="button"
+                  class="button ghost"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#alumni"
+                  aria-expanded="false"
+                  aria-controls="alumni"
+                >
+                  Past Team Members
+                </button>
+              </div>
+              <div id="alumni" class="collapse mt-5">
+                {alumni.map(({ year, members }) => (
+                  <div class="team-group">
+                    <h3 class="subheading">{year}</h3>
+                    <p>Execs and committee heads of the {year} school year.</p>
+                    <div class="row g-4 justify-content-center">
+                      {members.map((member) => (
+                        <div class="col-lg-3 col-md-4 col-6">
+                          <MemberCard member={member.data} compact delay={0} />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
+          )
+        }
       </div>
     </section>
 
-    <section id="trs" class="trs">
-      <div class="container" data-aos="fade-up">
-        <div class="section-title">
-          <h2>Committees</h2>
+    <section id="sponsors" class="sponsors section-dark">
+      <div class="container">
+        <div class="section-title" data-aos="fade-up">
+          <h2>Sponsors</h2>
+          <p>We are incredibly grateful for our sponsors. They have made it possible for us to achieve what we have.</p>
         </div>
-
-        <div class="row">
-          <div class="col-lg-8">
-            <p>
-              TAMS Repair Society is a committee that repairs many objects such as devices, vehicles, and instruments
-              for other TAMS students.
-            </p>
-            <p>We also host workshops for TAMS students who want to learn about different components of technology.</p>
-            <p>We're also planning to volunteer at local middle schools and give presentations about technology.</p>
-
-            <div class="action-links">
-              {
-                trsLinks.map((link) => (
-                  <a href={link.href} target="_blank" rel="noopener" class="btn-learn-more">
-                    {link.label}
-                  </a>
-                ))
-              }
-            </div>
-          </div>
+        <SponsorGrid sponsors={sponsors} />
+        <div class="text-center mt-5" data-aos="fade-up">
+          <a href={url('/donations/')} class="button primary">Become a sponsor</a>
         </div>
       </div>
     </section>
 
     <section id="contact" class="contact">
-      <div class="container" data-aos="fade-up">
-        <div class="section-title">
+      <div class="container">
+        <div class="section-title" data-aos="fade-up">
           <h2>Contact</h2>
-          <p>Get in touch with the team — we'll get back to you as quickly as we can.</p>
+          <p>Get in touch with the team and we'll get back to you as quickly as we can.</p>
         </div>
 
-        <div class="row">
-          <div class="col-lg-5 d-flex align-items-stretch">
-            <div class="info">
-              <div class="address">
+        <div class="row g-4">
+          <div class="col-lg-5" data-aos="fade-up">
+            <div class="info panel">
+              <div class="item">
                 <Icon name="bi:geo-alt" />
-                <h4>Location:</h4>
-                <p>1705 W. Sycamore Street, Denton, TX 76201</p>
+                <div><h4>Location</h4><p>1705 W. Sycamore Street, Denton, TX 76201</p></div>
               </div>
-
-              <div class="email">
+              <div class="item">
                 <Icon name="bi:envelope" />
-                <h4>Email:</h4>
-                <p><a href="mailto:tamsformers@gmail.com">tamsformers@gmail.com</a></p>
+                <div><h4>Email</h4><p><a href="mailto:tamsformers@gmail.com">tamsformers@gmail.com</a></p></div>
               </div>
-
-              <div class="phone">
+              <div class="item">
                 <Icon name="bi:phone" />
-                <h4>Call:</h4>
-                <p><a href="tel:+19403310050">(940) 331-0050</a></p>
+                <div><h4>Call</h4><p><a href="tel:+19403310050">(940) 331-0050</a></p></div>
               </div>
-
               <iframe
                 title="Map showing McConnell Hall, Denton, Texas"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6841244.551106788!2d-97.96368467891051!3d33.14977326603894!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x864dca699107f405%3A0xb365a33ec0a02b54!2sMcConnell%20Hall!5e0!3m2!1sen!2sus!4v1689667734705!5m2!1sen!2sus"
-                width="100%"
-                height="290"
-                style="border:0;"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3343.5!2d-97.1548!3d33.2118!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x864dca699107f405%3A0xb365a33ec0a02b54!2sMcConnell%20Hall!5e0!3m2!1sen!2sus!4v1689667734705!5m2!1sen!2sus"
                 allowfullscreen
                 loading="lazy"
                 referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
           </div>
 
-          <!-- The old contact form posted to forms/contact.php, which does not
-               exist and could not run on GitHub Pages regardless, so every
-               submission was silently discarded. Replaced with direct contact
-               details.
-               TODO: To accept messages through the site again, wire a form to a
-               static-form service such as Formspree or Web3Forms and restore
-               the markup here. -->
-          <div class="col-lg-7 mt-5 mt-lg-0 d-flex align-items-stretch">
-            <div class="reach-out w-100">
+          {/* no contact form: GitHub Pages has no backend; wire Formspree or similar if one is wanted */}
+          <div class="col-lg-7" data-aos="fade-up" data-aos-delay="100">
+            <div class="reach-out panel">
               <h3>Reach out</h3>
-              <p>
-                Questions about the team, sponsorship, or joining? Get in touch and we'll get back to you as quickly
-                as we can.
-              </p>
-
-              <div class="action-links">
-                <a class="btn-learn-more" href="mailto:tamsformers@gmail.com">Email the team</a>
-                <a class="btn-learn-more" href="tel:+19403310050">Call (940) 331-0050</a>
+              <p>Questions about the team, sponsorship, or joining? Email or call and we'll get back to you.</p>
+              <div class="action-links mt-3">
+                <a class="button ghost" href="mailto:tamsformers@gmail.com">Email the team</a>
+                <a class="button ghost" href="tel:+19403310050">Call (940) 331-0050</a>
               </div>
 
               <h4>Join us</h4>
@@ -342,29 +399,15 @@ const trsLinks = [
                 Students and mentors are welcome. Our Facebook group is the fastest way to hear about meetings and
                 build sessions.
               </p>
-              <div class="action-links">
-                <a
-                  class="btn-learn-more"
-                  href="https://www.facebook.com/groups/3458577824404005"
-                  target="_blank"
-                  rel="noopener">Facebook group</a
-                >
-                <a class="btn-learn-more" href={url('/donations/')}>Sponsor the team</a>
+              <div class="action-links mt-3">
+                <a class="button ghost" href="https://www.facebook.com/groups/3458577824404005" target="_blank" rel="noopener">Facebook group</a>
+                <a class="button ghost" href={url('/donations/')}>Sponsor the team</a>
               </div>
 
               <h4>Follow along</h4>
-              <div class="reach-out-social">
+              <div class="social-links">
                 {
-                  [
-                    { name: 'Twitter', icon: 'bx:bxl-twitter', href: 'https://twitter.com/FRC5212' },
-                    { name: 'Facebook', icon: 'bx:bxl-facebook', href: 'https://www.facebook.com/FRC5212' },
-                    { name: 'Instagram', icon: 'bx:bxl-instagram', href: 'https://www.instagram.com/frc5212?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==&igsi=ZDNlZDc0MzIxNw==' },
-                    {
-                      name: 'LinkedIn',
-                      icon: 'bx:bxl-linkedin',
-                      href: 'https://www.linkedin.com/in/tamsformers-robotics-48b31b287/',
-                    },
-                  ].map((social) => (
+                  socials.map((social) => (
                     <a href={social.href} target="_blank" rel="noopener" aria-label={social.name}>
                       <Icon name={social.icon} />
                     </a>

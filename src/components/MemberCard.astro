@@ -6,36 +6,54 @@ import type { CollectionEntry } from 'astro:content';
 interface Props {
   member: CollectionEntry<'team'>['data'];
   delay?: number;
+  compact?: boolean;
 }
 
-const { member, delay = 100 } = Astro.props;
+const { member, delay = 100, compact = false } = Astro.props;
+
+const initials = member.name
+  .split(/\s+/)
+  .map((part) => part[0])
+  .join('')
+  .slice(0, 2)
+  .toUpperCase();
 
 const socialIcons = [
   { key: 'facebook', icon: 'ri:facebook-fill', label: 'Facebook' },
   { key: 'instagram', icon: 'ri:instagram-fill', label: 'Instagram' },
   { key: 'linkedin', icon: 'ri:linkedin-box-fill', label: 'LinkedIn' },
 ] as const;
+const links = socialIcons.flatMap(({ key, icon, label }) =>
+  member.socials[key] ? [{ href: member.socials[key], icon, label }] : []
+);
 ---
 
-<div class="member d-flex align-items-start" data-aos="zoom-in" data-aos-delay={delay}>
-  <div class="pic">
-    <Image src={member.photo} alt={`${member.name}, ${member.role}`} width={240} class="img-fluid" loading="lazy" />
+<div class:list={['member panel', compact && 'compact']} data-aos="fade-up" data-aos-delay={delay}>
+  <div class="pic" aria-hidden={member.photo ? undefined : 'true'}>
+    {
+      member.photo ? (
+        <Image src={member.photo} alt={`${member.name}, ${member.role}`} width={280} loading="lazy" />
+      ) : (
+        initials
+      )
+    }
   </div>
-  <div class="member-info">
-    <h4>{member.name}</h4>
-    <span>{member.role}</span>
-    <p>{member.bio}</p>
-    <div class="social">
-      {
-        socialIcons.map(({ key, icon, label }) => {
-          const href = member.socials[key];
-          return href ? (
-            <a href={href} target="_blank" rel="noopener" aria-label={`${member.name} on ${label}`}>
-              <Icon name={icon} />
-            </a>
-          ) : null;
-        })
-      }
-    </div>
-  </div>
+  <h4>{member.name}</h4>
+  <span class="eyebrow">{member.role}</span>
+  {
+    !compact && (
+      <>
+        <p>{member.bio}</p>
+        {links.length > 0 && (
+          <div class="social-links">
+            {links.map(({ href, icon, label }) => (
+              <a href={href} target="_blank" rel="noopener" aria-label={`${member.name} on ${label}`}>
+                <Icon name={icon} />
+              </a>
+            ))}
+          </div>
+        )}
+      </>
+    )
+  }
 </div>

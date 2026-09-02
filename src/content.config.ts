@@ -19,8 +19,9 @@ const teamGroups = defineCollection({
   }),
 });
 
-// Everyone on the Team section. `group` must match an id in groups.yaml; the
-// build fails on a typo rather than silently dropping the person.
+// Everyone who has been on the team. `group` must match an id in groups.yaml;
+// the build fails on a typo rather than silently dropping the person. `year`
+// is the school year; members whose year is not `currentYear` are alumni.
 const team = defineCollection({
   loader: file('src/content/team/members.yaml'),
   schema: ({ image }) =>
@@ -28,10 +29,25 @@ const team = defineCollection({
       name: z.string(),
       role: z.string(),
       group: reference('teamGroups'),
-      year: z.string().optional(),
-      photo: image(),
+      year: z.string().regex(/^\d{4}-\d{4}$/),
+      photo: image().optional(),
       bio: z.string(),
       socials: socials.default({}),
+    }),
+});
+
+// One card per committee on the homepage, in `order`.
+const committees = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: 'src/content/committees' }),
+  schema: ({ image }) =>
+    z.object({
+      name: z.string(),
+      heads: z.array(z.string()).default([]),
+      summary: z.string(),
+      photo: image().optional(),
+      icon: z.string().optional(),
+      links: z.array(z.object({ label: z.string(), href: z.url() })).default([]),
+      order: z.number(),
     }),
 });
 
@@ -69,4 +85,4 @@ const robots = defineCollection({
     }),
 });
 
-export const collections = { teamGroups, team, sponsors, robots };
+export const collections = { teamGroups, team, committees, sponsors, robots };

@@ -11,75 +11,67 @@ export const getStaticPaths = (async () => {
 
 const { robot } = Astro.props;
 const { Content } = await render(robot);
+const hasBody = robot.body?.trim();
+const col = hasBody && robot.data.mechanisms.length > 0 ? 'col-lg-6' : 'col-12';
 ---
 
 <Base
   title={`${robot.data.name} (${robot.data.year}) | TAMSformers`}
   description={robot.data.summary}
+  heading={robot.data.name}
+  intro={robot.data.name === `${robot.data.year} Robot` ? robot.data.summary : `${robot.data.year} Robot. ${robot.data.summary}`}
 >
   <main id="main">
-    <section class="inner-page portfolio-details">
+    <section class="portfolio-details">
       <div class="container">
-        <div class="section-title">
-          <h2>{robot.data.name}</h2>
-          {/* Entries named after their season would otherwise repeat themselves. */}
-          {robot.data.name !== `${robot.data.year} Robot` && <p>{robot.data.year} Robot</p>}
-        </div>
-
-        <div class="row gy-4">
-          <div class="col-lg-8">
-            <div class="row gy-3">
-              {
-                robot.data.images.map((image, index) => (
-                  <div class="col-md-6">
-                    <a
-                      href={image.src}
-                      class="portfolio-lightbox"
-                      data-gallery={`robot-${robot.id}`}
-                      title={`${robot.data.name} — photo ${index + 1}`}
-                    >
-                      <Image
-                        src={image}
-                        alt={`${robot.data.name}, photo ${index + 1} of ${robot.data.images.length}`}
-                        width={600}
-                        class="img-fluid"
-                        loading={index === 0 ? 'eager' : 'lazy'}
-                      />
-                    </a>
-                  </div>
-                ))
-              }
-            </div>
-          </div>
-
-          <div class="col-lg-4">
-            <div class="portfolio-info">
-              <h3>Overview</h3>
-              <p>{robot.data.summary}</p>
-            </div>
-          </div>
-        </div>
-
-        {
-          robot.data.mechanisms.length > 0 && (
-            <div class="row mt-4">
-              <div class="col-12">
-                <h3>Mechanisms</h3>
-                {robot.data.mechanisms.map((mechanism) => (
-                  <div class="mb-3">
-                    <h4>{mechanism.title}</h4>
-                    <p>{mechanism.body}</p>
-                  </div>
-                ))}
+        <div class="row g-4 gallery">
+          {
+            robot.data.images.map((image, index) => (
+              <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay={100 * (index % 3)}>
+                <a
+                  href={image.src}
+                  class="frame portfolio-lightbox"
+                  data-gallery={`robot-${robot.id}`}
+                  title={`${robot.data.name} — photo ${index + 1}`}
+                >
+                  <Image
+                    src={image}
+                    alt={`${robot.data.name}, photo ${index + 1} of ${robot.data.images.length}`}
+                    width={600}
+                    loading={index === 0 ? 'eager' : 'lazy'}
+                  />
+                </a>
               </div>
-            </div>
-          )
-        }
+            ))
+          }
+        </div>
 
-        <div class="row mt-4">
-          <div class="col-12">
-            <Content />
-          </div>
+        <div class="row g-4 mt-2">
+          {
+            robot.data.mechanisms.length > 0 && (
+              <div class={col} data-aos="fade-up">
+                <div class="panel h-100">
+                  <h3 class="mb-4">Mechanisms</h3>
+                  {robot.data.mechanisms.map((mechanism) => (
+                    <div class="mechanism">
+                      <h4>{mechanism.title}</h4>
+                      <p>{mechanism.body}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )
+          }
+          {
+            hasBody && (
+              <div class={col} data-aos="fade-up" data-aos-delay="100">
+                <div class="panel prose h-100">
+                  <h3 class="mb-4">The season</h3>
+                  <Content />
+                </div>
+              </div>
+            )
+          }
         </div>
       </div>
     </section>

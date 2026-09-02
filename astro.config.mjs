@@ -20,7 +20,7 @@ export default defineConfig({
   // Fonts are downloaded and self-hosted at build time, so there is no
   // render-blocking request to fonts.googleapis.com. Only the weights the
   // stylesheet actually uses are fetched (the old site requested 300-700 plus
-  // italics for all three families and used none of the italics).
+  // italics and used none of the italics).
   fonts: [
     {
       provider: fontProviders.google(),
@@ -34,14 +34,6 @@ export default defineConfig({
       provider: fontProviders.google(),
       name: 'Jost',
       cssVariable: '--font-jost',
-      weights: [400, 500, 600, 700],
-      styles: ['normal'],
-      subsets: ['latin'],
-    },
-    {
-      provider: fontProviders.google(),
-      name: 'Poppins',
-      cssVariable: '--font-poppins',
       weights: [400, 500, 600, 700],
       styles: ['normal'],
       subsets: ['latin'],

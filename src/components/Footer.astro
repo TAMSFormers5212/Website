@@ -1,37 +1,28 @@
 ---
 import { url } from '../lib/url';
 import { Icon } from 'astro-icon/components';
+import { socials } from '../lib/site';
 
 const usefulLinks = [
   { label: 'Home', href: url('/#hero') },
   { label: 'About', href: url('/#about') },
-  { label: 'Sponsors', href: url('/#clients') },
-  { label: 'Past Robots', href: url('/#portfolio') },
+  { label: 'Robots', href: url('/#robot') },
+  { label: 'Committees', href: url('/#committees') },
+  { label: 'Outreach', href: url('/outreach/') },
   { label: 'Team', href: url('/#team') },
+  { label: 'Sponsors', href: url('/#sponsors') },
   { label: 'Calendar', href: url('/calendar/') },
   { label: 'Contact', href: url('/#contact') },
   { label: 'Donate', href: url('/donations/') },
 ];
 
 const year = new Date().getFullYear();
-
-const socials = [
-  { name: 'Twitter', icon: 'bx:bxl-twitter', class: 'twitter', href: 'https://twitter.com/FRC5212' },
-  { name: 'Facebook', icon: 'bx:bxl-facebook', class: 'facebook', href: 'https://www.facebook.com/FRC5212' },
-  { name: 'Instagram', icon: 'bx:bxl-instagram', class: 'instagram', href: 'https://www.instagram.com/frc5212?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==&igsi=ZDNlZDc0MzIxNw==' },
-  {
-    name: 'LinkedIn',
-    icon: 'bx:bxl-linkedin',
-    class: 'linkedin',
-    href: 'https://www.linkedin.com/in/tamsformers-robotics-48b31b287/',
-  },
-];
 ---
 
 <footer id="footer">
   <div class="footer-top">
     <div class="container">
-      <div class="row">
+      <div class="row gy-4">
         <div class="col-lg-4 col-md-6 footer-contact">
           <h3>TAMSformers</h3>
           <p>
@@ -62,7 +53,7 @@ const socials = [
           <div class="social-links mt-3">
             {
               socials.map((social) => (
-                <a href={social.href} class={social.class} target="_blank" rel="noopener" aria-label={social.name}>
+                <a href={social.href} target="_blank" rel="noopener" aria-label={social.name}>
                   <Icon name={social.icon} />
                 </a>
               ))
@@ -73,9 +64,9 @@ const socials = [
     </div>
   </div>
 
-  <div class="container footer-bottom clearfix">
-    <div class="copyright">
-      &copy; Copyright {year} <strong><span>TAMSformers</span></strong>. All Rights Reserved
+  <div class="footer-bottom">
+    <div class="container">
+      &copy; Copyright {year} <strong>TAMSformers</strong>. All Rights Reserved
     </div>
   </div>
 </footer>

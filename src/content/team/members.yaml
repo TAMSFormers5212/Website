@@ -1,7 +1,76 @@
-# Everyone shown in the Team section on the homepage. `group` orders execs
-# first, then TRS members.
-# To update the roster, edit this file — no HTML changes needed.
-# `photo` paths are relative to this file. Omit a social link to hide its icon.
+# Everyone who has been on the team. Members whose `year` matches currentYear
+# (src/lib/site.ts) appear in the Team section; everyone else is listed under
+# "Past Team Members". `group` names an id from groups.yaml.
+# `photo` paths are relative to this file; omit it to show an initials tile.
+# Omit a social link to hide its icon.
+
+# ---- 2025-2026 ----
+
+- id: aditi-gokhale
+  name: Aditi Gokhale
+  role: Build Lead
+  group: exec
+  year: 2025-2026
+  photo: ../../assets/img/team/2025-2026/aditi-gokhale.jpg
+  bio: >-
+    Aditi is the Build Lead for 2025-2026. She runs the build team and keeps
+    the robot coming together from first prototype to competition-ready.
+
+- id: jayden-weng
+  name: Jayden Weng
+  role: Design Lead
+  group: exec
+  year: 2025-2026
+  photo: ../../assets/img/team/2025-2026/jayden-weng.png
+  bio: >-
+    Jayden is the Design Lead for 2025-2026. He leads the CAD of the robot and
+    turns the team's ideas into parts the build team can make.
+
+- id: kaushik-duddala
+  name: Kaushik Duddala
+  role: Programming Lead
+  group: exec
+  year: 2025-2026
+  photo: ../../assets/img/team/2025-2026/kaushik-duddala.png
+  bio: >-
+    Kaushik is the Programming Lead for 2025-2026. He manages the robot's code
+    and teaches new members how to program it.
+
+- id: kei-maeda
+  name: Kei Maeda
+  role: Operations Director
+  group: exec
+  year: 2025-2026
+  photo: ../../assets/img/team/2025-2026/kei-maeda.png
+  bio: >-
+    Kei is the Operations Director for 2025-2026. He keeps the club running
+    day to day and is in charge of safety in the Makerspace.
+
+- id: abigail-televitckiy
+  name: Abigail Televitckiy
+  role: Business Lead
+  group: exec
+  year: 2025-2026
+  photo: ../../assets/img/team/2025-2026/abigail-televitckiy.jpg
+  bio: >-
+    Abigail is the Business Lead for 2025-2026. She manages the team's finances
+    and sponsorships and works with Outreach on fundraising.
+
+- id: hitaishi-chillara
+  name: Hitaishi Chillara
+  role: TAMS Repair Society Head
+  group: trs
+  year: 2025-2026
+  bio: Hitaishi co-runs TAMS Repair Society, its monthly open house and the repair requests in between.
+
+- id: gregory-daley
+  name: Gregory Daley
+  role: TAMS Repair Society Head
+  group: trs
+  year: 2025-2026
+  bio: Greg co-runs TAMS Repair Society and works through repairs with the people who bring them in.
+
+# ---- 2024-2025 ----
 
 - id: nathan-tan
   name: Nathan Tan
@@ -81,6 +150,7 @@
   name: Murtaza Haque
   role: TRS
   group: trs
+  year: 2024-2025
   photo: ../../assets/img/trs/murtaza-haque.jpg
   bio: >-
     I focus on repairing mainly bikes and certain types of circuitry. I also
@@ -97,6 +167,7 @@
   name: Ria Nair
   role: TRS
   group: trs
+  year: 2024-2025
   photo: ../../assets/img/trs/ria-nair.jpg
   bio: I handle the logistics and design side of TAMS Repair Society.
   socials:

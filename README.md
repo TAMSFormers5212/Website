@@ -9,14 +9,17 @@ npm run check
 ```
 
 ```
-src/content/team/members.yaml       # roster
-src/content/team/groups.yaml        # team sub-sections (execs, committees)
+src/content/team/members.yaml       # roster, every year
+src/content/team/groups.yaml        # team sub-sections (execs, TRS)
+src/content/committees/*.md         # committee cards on the homepage
 src/content/sponsors/sponsors.yaml  # sponsors
 src/content/robots/*.md             # robots
+src/lib/site.ts                     # currentYear; other years fold into "Past Team Members"
 src/assets/img/                     # images
 src/styles/style.css                # styles
 src/pages/                          # routes
 src/pages/[legacy].html.ts          # old-URL redirects
+public/robot.glb                    # homepage 3D model (binary glTF, Y-up)
 ```
 
 ```yaml
@@ -25,8 +28,8 @@ src/pages/[legacy].html.ts          # old-URL redirects
   name: Jane Doe
   role: Programming
   group: exec          # an id from groups.yaml
-  year: 2025-2026
-  photo: ../../assets/img/team/2024-2025/jane-doe.jpg
+  year: 2025-2026      # != currentYear -> alumni list
+  photo: ../../assets/img/team/2024-2025/jane-doe.jpg   # omit for an initials tile
   bio: One sentence.
   socials:
     instagram: https://instagram.com/janedoe
@@ -38,6 +41,20 @@ src/pages/[legacy].html.ts          # old-URL redirects
   name: Acme
   logo: ../../assets/img/sponsors/acme.png
   url: https://acme.com
+```
+
+```markdown
+<!-- src/content/committees/name.md -->
+---
+name: CAD Committee
+heads: [Jane Doe]
+order: 1
+summary: One or two sentences.
+photo: ../../assets/img/committees/thing.jpg   # optional
+links:                                          # optional
+  - label: Join
+    href: https://forms.example
+---
 ```
 
 ```markdown
@@ -59,6 +76,7 @@ mechanisms:
 
 ```
 /robots/<filename>/     # page per robots/*.md
+/outreach/              # src/pages/outreach.astro
 ```
 
 ```

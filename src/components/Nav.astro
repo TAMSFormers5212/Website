@@ -3,37 +3,27 @@ import { url } from '../lib/url';
 import { Icon } from 'astro-icon/components';
 import type { NavCta, NavLink } from '../lib/nav';
 
-// Anchor links point at the homepage explicitly so the nav works identically
-// on every page. main.ts smooth-scrolls when the target is on the current page.
-// The homepage opens on a dark hero, so the header can be transparent until
-// scrolled. Every other page starts on light content and needs a background
-// straight away or the white nav text is unreadable over it.
-const isHome = Astro.url.pathname.replace(/\/+$/, '') === url('/').replace(/\/+$/, '');
-
 interface Props {
   links?: NavLink[];
   cta?: NavCta;
 }
 
+// anchors point at the homepage so the nav works on every page
 const defaultLinks: NavLink[] = [
   { label: 'Home', href: url('/#hero') },
   { label: 'About', href: url('/#about') },
-  { label: 'Sponsors', href: url('/#clients') },
-  { label: 'Past Robots', href: url('/#why-us') },
-  { label: 'Volunteering', href: url('/#cta') },
+  { label: 'Robots', href: url('/#robot') },
+  { label: 'Committees', href: url('/#committees') },
+  { label: 'Outreach', href: url('/outreach/') },
   { label: 'Team', href: url('/#team') },
-  { label: 'TRS', href: url('/#trs') },
-  // The "Dates and Meetings" dropdown was commented out upstream, so it is
-  // left out here too. The Calendar page still exists and is linked from the
-  // footer; restore this entry to bring the dropdown back.
-  // { label: 'Dates and Meetings', children: [{ label: 'Calendar', href: url('/calendar/') }] },
+  { label: 'Sponsors', href: url('/#sponsors') },
   { label: 'Contact', href: url('/#contact') },
 ];
 
 const { links = defaultLinks, cta = { label: 'Donate', href: url('/donations/') } } = Astro.props;
 ---
 
-<header id="header" class:list={['fixed-top', !isHome && 'header-inner-pages']}>
+<header id="header" class="fixed-top">
   <div class="container d-flex align-items-center">
     <h1 class="logo me-auto"><a href={url('/')}>TAMSformers</a></h1>
 

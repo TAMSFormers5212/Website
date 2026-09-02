@@ -3,7 +3,7 @@ import { url } from '../lib/url';
 
 // old flat .html urls -> new addresses, built against base
 const moved: Record<string, string> = {
-  TRS: '/#trs',
+  TRS: '/#committees',
   donations: '/donations/',
   calendar: '/calendar/',
   'portfolio-details': '/robots/',

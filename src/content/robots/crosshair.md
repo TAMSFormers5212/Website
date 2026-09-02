@@ -3,7 +3,6 @@ name: Crosshair
 year: "2024"
 filter: "2024"
 order: 1
-featured: true
 summary: >-
   This is our Robot, Crosshair, that was made to compete in the FRC Crescendo
   game during the 2024 season, First In Show. This game involved collecting
@@ -16,6 +15,7 @@ images:
   - ../../assets/img/robots/2024/crosshair-2.jpg
   - ../../assets/img/robots/2024/crosshair-3.jpg
   - ../../assets/img/robots/2024/crosshair-4.jpg
+  - ../../assets/img/robots/2024/crosshair-5.png
   - ../../assets/img/robots/2024/crosshair-6.jpeg
 mechanisms:
   - title: Drivetrain
