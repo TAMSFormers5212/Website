@@ -1,0 +1,41 @@
+---
+import { Image } from 'astro:assets';
+import { Icon } from 'astro-icon/components';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  member: CollectionEntry<'team'>['data'];
+  delay?: number;
+}
+
+const { member, delay = 100 } = Astro.props;
+
+const socialIcons = [
+  { key: 'facebook', icon: 'ri:facebook-fill', label: 'Facebook' },
+  { key: 'instagram', icon: 'ri:instagram-fill', label: 'Instagram' },
+  { key: 'linkedin', icon: 'ri:linkedin-box-fill', label: 'LinkedIn' },
+] as const;
+---
+
+<div class="member d-flex align-items-start" data-aos="zoom-in" data-aos-delay={delay}>
+  <div class="pic">
+    <Image src={member.photo} alt={`${member.name}, ${member.role}`} width={240} class="img-fluid" loading="lazy" />
+  </div>
+  <div class="member-info">
+    <h4>{member.name}</h4>
+    <span>{member.role}</span>
+    <p>{member.bio}</p>
+    <div class="social">
+      {
+        socialIcons.map(({ key, icon, label }) => {
+          const href = member.socials[key];
+          return href ? (
+            <a href={href} target="_blank" rel="noopener" aria-label={`${member.name} on ${label}`}>
+              <Icon name={icon} />
+            </a>
+          ) : null;
+        })
+      }
+    </div>
+  </div>
+</div>

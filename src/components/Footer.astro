@@ -1,0 +1,81 @@
+---
+import { url } from '../lib/url';
+import { Icon } from 'astro-icon/components';
+
+const usefulLinks = [
+  { label: 'Home', href: url('/#hero') },
+  { label: 'About', href: url('/#about') },
+  { label: 'Sponsors', href: url('/#clients') },
+  { label: 'Past Robots', href: url('/#portfolio') },
+  { label: 'Team', href: url('/#team') },
+  { label: 'Calendar', href: url('/calendar/') },
+  { label: 'Contact', href: url('/#contact') },
+  { label: 'Donate', href: url('/donations/') },
+];
+
+const year = new Date().getFullYear();
+
+const socials = [
+  { name: 'Twitter', icon: 'bx:bxl-twitter', class: 'twitter', href: 'https://twitter.com/FRC5212' },
+  { name: 'Facebook', icon: 'bx:bxl-facebook', class: 'facebook', href: 'https://www.facebook.com/FRC5212' },
+  { name: 'Instagram', icon: 'bx:bxl-instagram', class: 'instagram', href: 'https://www.instagram.com/frc5212?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==&igsi=ZDNlZDc0MzIxNw==' },
+  {
+    name: 'LinkedIn',
+    icon: 'bx:bxl-linkedin',
+    class: 'linkedin',
+    href: 'https://www.linkedin.com/in/tamsformers-robotics-48b31b287/',
+  },
+];
+---
+
+<footer id="footer">
+  <div class="footer-top">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4 col-md-6 footer-contact">
+          <h3>TAMSformers</h3>
+          <p>
+            1705 W. Sycamore Street <br />
+            Denton, TX 76201<br />
+            United States <br /><br />
+            <strong>Phone:</strong> <a href="tel:+19403310050">(940) 331-0050</a><br />
+            <strong>Email:</strong> <a href="mailto:tamsformers@gmail.com">tamsformers@gmail.com</a><br />
+          </p>
+        </div>
+
+        <div class="col-lg-4 col-md-6 footer-links">
+          <h4>Useful Links</h4>
+          <ul>
+            {
+              usefulLinks.map((link) => (
+                <li>
+                  <Icon name="bx:chevron-right" /> <a href={link.href}>{link.label}</a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <div class="col-lg-4 col-md-6 footer-links">
+          <h4>Our Social Networks</h4>
+          <p>Here are links to our various social media accounts</p>
+          <div class="social-links mt-3">
+            {
+              socials.map((social) => (
+                <a href={social.href} class={social.class} target="_blank" rel="noopener" aria-label={social.name}>
+                  <Icon name={social.icon} />
+                </a>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container footer-bottom clearfix">
+    <div class="copyright">
+      &copy; Copyright {year} <strong><span>TAMSformers</span></strong>. All Rights Reserved
+    </div>
+  </div>
+</footer>

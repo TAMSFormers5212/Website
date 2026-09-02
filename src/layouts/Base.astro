@@ -1,0 +1,68 @@
+---
+import { Font } from 'astro:assets';
+import { Icon } from 'astro-icon/components';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { url } from '../lib/url';
+import type { NavCta, NavLink } from '../lib/nav';
+// Bootstrap's grid and utilities must load before the template stylesheet,
+// which overrides them.
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../styles/style.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  // Pages may override the shared nav; the donations page ships its own.
+  navLinks?: NavLink[];
+  navCta?: NavCta;
+}
+
+const {
+  title = 'TAMSformers',
+  description = 'FRC Team 5212, the TAMSformers: a student robotics team at the Texas Academy of Mathematics and Science.',
+  navLinks,
+  navCta,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+
+    {/* Both generated from src/assets/img/logo.png; the touch icon sits on the header colour because iOS fills transparency with black. */}
+    <link rel="icon" type="image/png" sizes="64x64" href={url('/favicon.png')} />
+    <link rel="apple-touch-icon" sizes="180x180" href={url('/apple-touch-icon.png')} />
+
+    <Font cssVariable="--font-open-sans" preload />
+    <Font cssVariable="--font-jost" preload />
+    <Font cssVariable="--font-poppins" />
+  </head>
+
+  <body>
+    <Nav links={navLinks} cta={navCta} />
+    <slot />
+    <Footer />
+
+    <a href="#header" class="back-to-top d-flex align-items-center justify-content-center" aria-label="Back to top">
+      <Icon name="bi:arrow-up-short" />
+    </a>
+
+    <script>
+      import '../scripts/main';
+    </script>
+  </body>
+</html>

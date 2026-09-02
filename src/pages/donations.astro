@@ -1,0 +1,182 @@
+---
+import { Image } from 'astro:assets';
+import { Icon } from 'astro-icon/components';
+import Base from '../layouts/Base.astro';
+import { url } from '../lib/url';
+import type { NavLink } from '../lib/nav';
+import sponsorInfo from '../assets/img/sponsor-info.png';
+
+// This page carries its own in-page nav rather than the site-wide one.
+const navLinks: NavLink[] = [
+  { label: 'Home', href: '#sponsor-intro' },
+  { label: 'Sponsorship Tiers', href: '#tiers' },
+  { label: 'Why Sponsor Us?', href: '#why-sponsor' },
+  { label: 'Back to TAMSformers Home Page', href: url('/') },
+];
+
+// The full sponsorship write-up lives in a shared Google Doc.
+const detailsDoc =
+  'https://docs.google.com/document/d/10j5uqoAWN2g2Ksszawrct1-dpI4DrzXAJVO0XPR2K5U/edit?usp=sharing';
+
+const tiers = [
+  {
+    name: 'Bronze-Level Sponsor',
+    amount: '100+',
+    benefits: ['Name/Logo on Team website', 'Name/Logo on General media'],
+  },
+  {
+    name: 'Silver-Level Sponsor',
+    amount: '500+',
+    benefits: ['All Bronze-Level Benefits', 'Placement on Team T-shirts', 'Logo on Competition robot'],
+  },
+  {
+    name: 'Gold-Level Sponsor',
+    amount: '1000+',
+    benefits: [
+      'All Silver-Level Benefits',
+      'Prominent featuring on Team T-Shirt and Robot',
+      'Thank you plaque at the end of each season',
+    ],
+  },
+  {
+    name: 'Diamond-Level Sponsor',
+    amount: '2000+',
+    benefits: [
+      'All Gold-Level Benefits',
+      'Logos displayed prominently in our workspace and competition pit',
+      'Full support at any STEM related outreach programs or events',
+      'Optional robot demo at company',
+    ],
+  },
+];
+
+// Not a priced tier: arranged case by case, so it sits below the grid.
+const custom = {
+  name: 'Custom Sponsorship',
+  note: 'Any amount, or in-kind support',
+  benefits: [
+    'Benefits tailored to your contribution',
+    'In-kind donations welcome (parts, tooling, services)',
+    "Get in touch and we'll work something out",
+  ],
+};
+---
+
+<Base
+  title="Donations | TAMSformers"
+  description="Support TAMSformers Robotics Team 5212 through our sponsorship tiers."
+  navLinks={navLinks}
+  navCta={{ label: 'Donate', href: '#tiers' }}
+>
+  <main id="main">
+    <section id="sponsor-intro" class="cta">
+      <div class="container" data-aos="zoom-in">
+        <div class="col-lg-9 text-center text-lg-start">
+          <h3>Sponsor TAMSformers</h3>
+          <p>
+            TAMSformers is a high school FRC robotics team based in Denton, TX. We build competitive robots, mentor
+            younger students, and inspire the next generation of engineers. Your sponsorship directly funds robot
+            parts, competition entry fees, travel, and STEM outreach programs in our community.
+          </p>
+          <p>
+            We offer several sponsorship tiers to support our robotics team. Each tier comes with increasing
+            visibility and engagement benefits. Choose the tier that fits your organization best.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="tiers" class="pricing">
+      <div class="container" data-aos="fade-up">
+        <div class="section-title">
+          <h2>Sponsorship Tiers</h2>
+          <p>
+            Here are our different sponsorship plans and the benefits of each. Click below to learn more about our
+            sponsorship options.
+          </p>
+        </div>
+
+        <div class="row justify-content-center">
+          {
+            tiers.map((tier, index) => (
+              <div class="col-lg-3 col-md-6 mt-4 mt-lg-0 d-flex" data-aos="fade-up" data-aos-delay={100 * (index + 1)}>
+                <div class="box">
+                  <h3>{tier.name}</h3>
+                  <h4>
+                    <sup>$</sup>
+                    {tier.amount}
+                    <span>per month</span>
+                  </h4>
+                  <ul>
+                    {tier.benefits.map((benefit) => (
+                      <li>
+                        <Icon name="bx:check" /> {benefit}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+
+        <div class="row justify-content-center">
+          <div class="col-lg-10" data-aos="fade-up" data-aos-delay="500">
+            <div class="box box-custom">
+              <h3>{custom.name}</h3>
+              <h4 class="custom-amount">{custom.note}</h4>
+              <ul class="custom-benefits">
+                {
+                  custom.benefits.map((benefit) => (
+                    <li>
+                      <Icon name="bx:check" /> {benefit}
+                    </li>
+                  ))
+                }
+              </ul>
+              <a href={url('/#contact')} class="buy-btn">Contact Us</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center mt-4" data-aos="fade-up" data-aos-delay="600">
+          <a href={detailsDoc} target="_blank" rel="noopener" class="buy-btn buy-btn-lg">More Details</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="why-sponsor" class="why-sponsor section-bg">
+      <div class="container" data-aos="fade-up">
+        <div class="section-title"><h2>Why Sponsor Us?</h2></div>
+
+        <div class="row align-items-center">
+          <div class="col-lg-6" data-aos="fade-right" data-aos-delay="100">
+            <Image
+              src={sponsorInfo}
+              alt="Sponsorship information: donation levels and the benefits included at each level"
+              class="img-fluid"
+              loading="eager"
+            />
+          </div>
+          <div class="col-lg-6" data-aos="fade-left" data-aos-delay="200">
+            <p>
+              Sponsoring TAMSformers is an investment in the future of STEM education. Our team of dedicated high
+              school students designs, builds, and programs a competitive robot each season while developing
+              real-world engineering, teamwork, and leadership skills.
+            </p>
+            <p>
+              Your sponsorship helps us cover competition entry fees, robot parts and materials, travel expenses, and
+              community outreach programs. In return, your organization gains visibility among students, families,
+              educators, and the broader FRC robotics community.
+            </p>
+            <p>
+              We are proud to partner with organizations that share our passion for engineering, innovation, and
+              empowering the next generation of problem-solvers.
+            </p>
+            <p><strong>Click "More Details" above to view our full sponsorship document.</strong></p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</Base>

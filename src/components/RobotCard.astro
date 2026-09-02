@@ -1,0 +1,38 @@
+---
+import { Image } from 'astro:assets';
+import { Icon } from 'astro-icon/components';
+import { url } from '../lib/url';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  name: string;
+  year: string;
+  filter: string;
+  image: ImageMetadata;
+  slug: string;
+  index: number;
+}
+
+const { name, year, filter, image, slug, index } = Astro.props;
+---
+
+<div class="col-lg-4 col-md-6 portfolio-item" data-filter={filter}>
+  <div class="portfolio-img">
+    <Image src={image} alt={`${name}, the team's ${year} competition robot`} width={600} class="img-fluid" loading="lazy" />
+  </div>
+  <div class="portfolio-info">
+    <h4>{name}</h4>
+    <p>{year} Robot</p>
+    <a
+      href={image.src}
+      data-gallery="portfolioGallery"
+      class="portfolio-lightbox preview-link"
+      title={`${name} — photo ${index + 1}`}
+    >
+      <Icon name="bx:plus" />
+    </a>
+    <a href={url(`/robots/${slug}/`)} class="details-link" title={`More about ${name}`}>
+      <Icon name="bx:link" />
+    </a>
+  </div>
+</div>

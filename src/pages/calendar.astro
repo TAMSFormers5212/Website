@@ -1,0 +1,22 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  title="Calendar | TAMSformers"
+  description="Meeting dates, build sessions, and competition dates for FRC Team 5212."
+>
+  <main id="main">
+    <section class="inner-page">
+      <div class="container">
+        <div class="section-title"><h2>Calendar</h2></div>
+        <!-- Google Calendar owned by the team account. -->
+        <iframe
+          class="calendarEmbed"
+          title="TAMSformers team calendar"
+          src="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23ffffff&ctz=America%2FChicago&showTitle=1&title=TAMSformers%20Calender&src=c2Flczk3NTVia2NmcXNmOW1haGk3c2lmOGNAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&color=%23D50000"
+          loading="lazy"></iframe>
+      </div>
+    </section>
+  </main>
+</Base>

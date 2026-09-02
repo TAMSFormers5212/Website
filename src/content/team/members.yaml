@@ -1,0 +1,103 @@
+# Everyone shown in the Team section on the homepage. `group` orders execs
+# first, then TRS members.
+# To update the roster, edit this file — no HTML changes needed.
+# `photo` paths are relative to this file. Omit a social link to hide its icon.
+
+- id: nathan-tan
+  name: Nathan Tan
+  role: Engineering
+  group: exec
+  year: 2024-2025
+  photo: ../../assets/img/team/2024-2025/nathan-tan.jpg
+  bio: >-
+    Nathan is the Chief Engineer for 2024-2025. He works on the design and
+    manufacturing of the robot as well as teaches CAD and workshop skills.
+  socials:
+    facebook: https://www.facebook.com/profile.php?id=100090405729569
+    instagram: https://www.instagram.com/natttaaannnn/
+    linkedin: https://www.linkedin.com/in/nathan-tan-bb6732292/
+
+- id: sameer-agarwal
+  name: Sameer Agarwal
+  role: Programming / TRS
+  group: exec
+  year: 2024-2025
+  photo: ../../assets/img/team/2024-2025/sameer-agarwal.jpg
+  bio: >-
+    Sameer is the Programming Lead for 2024-2025. He manages the programming
+    side of the robot and teaches coding to juniors. He also works with the
+    wiring and electronics of the robot.
+  socials:
+    facebook: https://www.facebook.com/profile.php?id=100083941898216
+    instagram: https://www.instagram.com/sam.eer.agarwal/
+    linkedin: https://www.linkedin.com/in/sameer-a-1157a2286/
+
+- id: chloe-tang
+  name: Chloe Tang
+  role: Social
+  group: exec
+  year: 2024-2025
+  photo: ../../assets/img/team/2024-2025/chloe-tang.jpeg
+  bio: >-
+    Chloe is the Social Coordinator for 2024-2025. She manages our social media
+    accounts and maintains posts while also organizing volunteering
+    opportunities.
+  socials:
+    facebook: https://www.facebook.com/profile.php?id=100085997860964
+    instagram: https://www.instagram.com/chloertang/
+    linkedin: https://www.linkedin.com/in/chloe-tang-44864b2b2/
+
+- id: shuopu-wang
+  name: Shuopu Wang
+  role: Business
+  group: exec
+  year: 2024-2025
+  photo: ../../assets/img/team/2024-2025/shuopu-wang.jpg
+  bio: >-
+    Shuopu is the Business Director for 2024-2025. He manages our finances and
+    coordinates grants for the team. He also takes care of logistics for our
+    competitions and travel.
+  socials:
+    facebook: https://www.facebook.com/profile.php?id=100085967055725
+    instagram: https://www.instagram.com/shuopuwang2.0/
+    linkedin: https://www.linkedin.com/in/shuopu-wang-5409ab283/
+
+# Kevin's Instagram and LinkedIn were empty href="" in the old markup, which
+# linked back to the same page. They are omitted until real URLs are available.
+- id: kevin-li
+  name: Kevin Li
+  role: Special Operations
+  group: exec
+  year: 2024-2025
+  photo: ../../assets/img/team/2024-2025/kevin-li.jpg
+  bio: >-
+    Kevin is the Special Operations Manager for 2024-2025. He handles a variety
+    of roles, including programming, building, and researching new ideas for
+    implementation.
+  socials:
+    facebook: https://www.facebook.com/profile.php?id=100092421590519
+
+- id: trs-murtaza-haque
+  name: Murtaza Haque
+  role: TRS
+  group: trs
+  photo: ../../assets/img/trs/murtaza-haque.jpg
+  bio: >-
+    I focus on repairing mainly bikes and certain types of circuitry. I also
+    meddle with computer repair a little bit.
+  socials:
+    facebook: https://www.facebook.com/profile.php?id=100093926327175
+    instagram: https://www.instagram.com/murtazahaque/
+    linkedin: https://www.linkedin.com/in/murtaza-haque786
+
+# NOTE: Ria's Facebook and LinkedIn in the old markup pointed at Luis Espinosa's
+# profiles — almost certainly a copy-paste error. They are omitted rather than
+# carried over. Add the correct URLs here.
+- id: trs-ria-nair
+  name: Ria Nair
+  role: TRS
+  group: trs
+  photo: ../../assets/img/trs/ria-nair.jpg
+  bio: I handle the logistics and design side of TAMS Repair Society.
+  socials:
+    instagram: https://www.instagram.com/rianair5/

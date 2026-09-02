@@ -1,0 +1,47 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import { url } from '../../lib/url';
+
+const robots = (await getCollection('robots')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<Base title="Our Robots | TAMSformers" description="Competition robots built by FRC Team 5212, the TAMSformers.">
+  <main id="main">
+    <section class="inner-page portfolio">
+      <div class="container">
+        <div class="section-title">
+          <h2>Our Robots</h2>
+          <p>Every robot the team has competed with.</p>
+        </div>
+
+        <div class="row">
+          {
+            robots.map((robot) => (
+              <div class="col-lg-4 col-md-6 portfolio-item">
+                <a href={url(`/robots/${robot.id}/`)}>
+                  <div class="portfolio-img">
+                    <Image
+                      src={robot.data.images[0]}
+                      alt={`${robot.data.name}, the team's ${robot.data.year} competition robot`}
+                      width={600}
+                      class="img-fluid"
+                      loading="lazy"
+                    />
+                  </div>
+                </a>
+                <div class="portfolio-info">
+                  <h4>
+                    <a href={url(`/robots/${robot.id}/`)}>{robot.data.name}</a>
+                  </h4>
+                  <p>{robot.data.year} Robot</p>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+  </main>
+</Base>
