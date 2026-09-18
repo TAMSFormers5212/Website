@@ -1,0 +1,41 @@
+---
+import { Image } from 'astro:assets';
+import { Icon } from 'astro-icon/components';
+import { url } from '../lib/url';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  name: string;
+  year: string;
+  filter: string;
+  image: ImageMetadata;
+  slug: string;
+  index: number;
+  gallery?: string;
+}
+
+const { name, year, filter, image, slug, index, gallery = 'robots' } = Astro.props;
+const href = url(`/robots/${slug}/`);
+---
+
+<div class="col-lg-4 col-md-6 portfolio-item" data-filter={filter} data-aos="fade-up" data-aos-delay={100 * (index % 3)}>
+  <div class="robot-card panel">
+    <a href={href} class="frame">
+      <Image src={image} alt={`${name}, the team's ${year} competition robot`} width={600} loading="lazy" />
+    </a>
+    <div class="caption">
+      <div>
+        <h4><a href={href}>{name}</a></h4>
+        {name !== `${year} Robot` && <span class="eyebrow">{year} Robot</span>}
+      </div>
+      <div class="links">
+        <a href={image.src} data-gallery={gallery} class="portfolio-lightbox" title={`${name} — photo ${index + 1}`} aria-label="View photo">
+          <Icon name="bx:zoom-in" />
+        </a>
+        <a href={href} title={`More about ${name}`} aria-label={`More about ${name}`}>
+          <Icon name="bx:right-arrow-alt" />
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,35 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import RobotCard from '../../components/RobotCard.astro';
+
+const robots = (await getCollection('robots')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<Base
+  title="Our Robots | TAMSformers"
+  description="Competition robots built by FRC Team 5212, the TAMSformers."
+  heading="Our Robots"
+  intro="Every robot the team has competed with."
+>
+  <main id="main">
+    <section class="portfolio">
+      <div class="container">
+        <div class="row g-4">
+          {
+            robots.map((robot, index) => (
+              <RobotCard
+                name={robot.data.name}
+                year={robot.data.year}
+                filter={robot.data.filter}
+                image={robot.data.images[0]}
+                slug={robot.id}
+                index={index}
+              />
+            ))
+          }
+        </div>
+      </div>
+    </section>
+  </main>
+</Base>

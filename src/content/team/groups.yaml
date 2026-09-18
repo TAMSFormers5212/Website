@@ -1,0 +1,14 @@
+# Sub-sections of the homepage Team section, shown in `order`. Each member in
+# members.yaml names one of these ids in its `group` field. To add a committee,
+# add an entry here and point its members at it.
+- id: exec
+  title: Club Execs
+  order: 1
+  description: >-
+    Each exec manages a separate area of the club, and together they keep the
+    team operational.
+
+- id: committees
+  title: Committee Heads
+  order: 2
+  description: The students who run each of the club's committees.

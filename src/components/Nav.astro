@@ -1,0 +1,63 @@
+---
+import { url } from '../lib/url';
+import { Icon } from 'astro-icon/components';
+import type { NavCta, NavLink } from '../lib/nav';
+
+interface Props {
+  links?: NavLink[];
+  cta?: NavCta;
+}
+
+// anchors point at the homepage so the nav works on every page
+const defaultLinks: NavLink[] = [
+  { label: 'Home', href: url('/#hero') },
+  { label: 'About', href: url('/#about') },
+  { label: 'Robots', href: url('/#robot') },
+  { label: 'Committees', href: url('/#committees') },
+  { label: 'Outreach', href: url('/outreach/') },
+  { label: 'Team', href: url('/#team') },
+  { label: 'Sponsors', href: url('/#sponsors') },
+  { label: 'Contact', href: url('/#contact') },
+];
+
+const { links = defaultLinks, cta = { label: 'Donate', href: url('/donations/') } } = Astro.props;
+---
+
+<header id="header" class="fixed-top">
+  <div class="container d-flex align-items-center">
+    <h1 class="logo me-auto"><a href={url('/')}>TAMSformers</a></h1>
+
+    <nav id="navbar" class="navbar">
+      <ul>
+        {
+          links.map((link) =>
+            link.children ? (
+              <li class="dropdown">
+                <a href="#">
+                  <span>{link.label}</span> <Icon name="bi:chevron-down" />
+                </a>
+                <ul>
+                  {link.children.map((child) => (
+                    <li>
+                      <a href={child.href}>{child.label}</a>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ) : (
+              <li>
+                <a class="nav-link scrollto" href={link.href}>
+                  {link.label}
+                </a>
+              </li>
+            )
+          )
+        }
+        <li><a class="getstarted scrollto" href={cta.href}>{cta.label}</a></li>
+      </ul>
+      <button type="button" class="mobile-nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <Icon name="bi:list" />
+      </button>
+    </nav>
+  </div>
+</header>

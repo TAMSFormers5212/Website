@@ -1,0 +1,32 @@
+# Sponsor logos shown on the homepage. Add a new sponsor by dropping its logo
+# in src/assets/img/sponsors/ and adding an entry here.
+
+- id: ibm
+  name: IBM
+  logo: ../../assets/img/sponsors/ibm.png
+  url: https://www.ibm.com/us-en
+
+- id: nvidia
+  name: NVIDIA
+  logo: ../../assets/img/sponsors/nvidia.png
+  url: https://www.nvidia.com/en-us/
+
+- id: lockheed-martin
+  name: Lockheed Martin
+  logo: ../../assets/img/sponsors/lockheed-martin.png
+  url: https://www.lockheedmartin.com/en-us/index.html
+
+- id: chipotle
+  name: Chipotle
+  logo: ../../assets/img/sponsors/chipotle.png
+  url: https://www.chipotle.com/
+
+- id: flyset
+  name: FlySET
+  logo: ../../assets/img/sponsors/flyset.png
+  url: https://flyset.org/
+
+- id: texas-workforce-commission
+  name: Texas Workforce Commission
+  logo: ../../assets/img/sponsors/texas-workforce-commission.png
+  url: https://www.twc.texas.gov/

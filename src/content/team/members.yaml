@@ -1,0 +1,195 @@
+# Everyone who has been on the team. Members whose `year` matches currentYear
+# (src/lib/site.ts) appear in the Team section; everyone else is listed under
+# "Past Team Members". `group` names an id from groups.yaml.
+# `photo` paths are relative to this file; omit it to show an initials tile.
+# Omit a social link to hide its icon.
+
+# ---- 2025-2026 ----
+
+- id: aditi-gokhale
+  name: Aditi Gokhale
+  role: Build Lead
+  group: exec
+  year: 2025-2026
+  photo: ../../assets/img/team/2025-2026/aditi-gokhale.jpg
+  bio: >-
+    Aditi is the Build Lead for 2025-2026. She runs the build team and keeps
+    the robot coming together from first prototype to competition-ready.
+
+- id: jayden-weng
+  name: Jayden Weng
+  role: Design Lead
+  group: exec
+  year: 2025-2026
+  photo: ../../assets/img/team/2025-2026/jayden-weng.png
+  bio: >-
+    Jayden is the Design Lead for 2025-2026. He leads the CAD of the robot and
+    turns the team's ideas into parts the build team can make.
+
+- id: kaushik-duddala
+  name: Kaushik Duddala
+  role: Programming Lead
+  group: exec
+  year: 2025-2026
+  photo: ../../assets/img/team/2025-2026/kaushik-duddala.png
+  bio: >-
+    Kaushik is the Programming Lead for 2025-2026. He manages the robot's code
+    and teaches new members how to program it.
+
+- id: kei-maeda
+  name: Kei Maeda
+  role: Operations Director
+  group: exec
+  year: 2025-2026
+  photo: ../../assets/img/team/2025-2026/kei-maeda.png
+  bio: >-
+    Kei is the Operations Director for 2025-2026. He keeps the club running
+    day to day and is in charge of safety in the Makerspace.
+
+- id: abigail-televitckiy
+  name: Abigail Televitckiy
+  role: Business Lead
+  group: exec
+  year: 2025-2026
+  photo: ../../assets/img/team/2025-2026/abigail-televitckiy.jpg
+  bio: >-
+    Abigail is the Business Lead for 2025-2026. She manages the team's finances
+    and sponsorships and works with Outreach on fundraising.
+
+- id: hitaishi-chillara
+  name: Hitaishi Chillara
+  role: TAMS Repair Society Head
+  group: committees
+  year: 2025-2026
+  bio: Hitaishi co-runs TAMS Repair Society, its monthly open house and the repair requests in between.
+
+- id: gregory-daley
+  name: Gregory Daley
+  role: TAMS Repair Society Head
+  group: committees
+  year: 2025-2026
+  bio: Greg co-runs TAMS Repair Society and works through repairs with the people who bring them in.
+
+- id: siddharth-kakumanu
+  name: Siddharth Kakumanu
+  role: CAD Committee Head
+  group: committees
+  year: 2025-2026
+  bio: "Siddharth runs the CAD Committee: junior training and the team's Cadathons."
+
+- id: aron-ellias
+  name: Aron Ellias
+  role: Outreach Head
+  group: committees
+  year: 2025-2026
+  bio: Aron leads Outreach, working with the business team on sponsorships and community fundraising.
+
+- id: saachi-patil
+  name: Saachi Patil
+  role: Polygon Society Head
+  group: committees
+  year: 2025-2026
+  bio: Saachi heads the Polygon Society, the team's Blender modelling and animation group run with pROFILE.
+
+# ---- 2024-2025 ----
+
+- id: nathan-tan
+  name: Nathan Tan
+  role: Engineering
+  group: exec
+  year: 2024-2025
+  photo: ../../assets/img/team/2024-2025/nathan-tan.jpg
+  bio: >-
+    Nathan is the Chief Engineer for 2024-2025. He works on the design and
+    manufacturing of the robot as well as teaches CAD and workshop skills.
+  socials:
+    facebook: https://www.facebook.com/profile.php?id=100090405729569
+    instagram: https://www.instagram.com/natttaaannnn/
+    linkedin: https://www.linkedin.com/in/nathan-tan-bb6732292/
+
+- id: sameer-agarwal
+  name: Sameer Agarwal
+  role: Programming / TRS
+  group: exec
+  year: 2024-2025
+  photo: ../../assets/img/team/2024-2025/sameer-agarwal.jpg
+  bio: >-
+    Sameer is the Programming Lead for 2024-2025. He manages the programming
+    side of the robot and teaches coding to juniors. He also works with the
+    wiring and electronics of the robot.
+  socials:
+    facebook: https://www.facebook.com/profile.php?id=100083941898216
+    instagram: https://www.instagram.com/sam.eer.agarwal/
+    linkedin: https://www.linkedin.com/in/sameer-a-1157a2286/
+
+- id: chloe-tang
+  name: Chloe Tang
+  role: Social
+  group: exec
+  year: 2024-2025
+  photo: ../../assets/img/team/2024-2025/chloe-tang.jpeg
+  bio: >-
+    Chloe is the Social Coordinator for 2024-2025. She manages our social media
+    accounts and maintains posts while also organizing volunteering
+    opportunities.
+  socials:
+    facebook: https://www.facebook.com/profile.php?id=100085997860964
+    instagram: https://www.instagram.com/chloertang/
+    linkedin: https://www.linkedin.com/in/chloe-tang-44864b2b2/
+
+- id: shuopu-wang
+  name: Shuopu Wang
+  role: Business
+  group: exec
+  year: 2024-2025
+  photo: ../../assets/img/team/2024-2025/shuopu-wang.jpg
+  bio: >-
+    Shuopu is the Business Director for 2024-2025. He manages our finances and
+    coordinates grants for the team. He also takes care of logistics for our
+    competitions and travel.
+  socials:
+    facebook: https://www.facebook.com/profile.php?id=100085967055725
+    instagram: https://www.instagram.com/shuopuwang2.0/
+    linkedin: https://www.linkedin.com/in/shuopu-wang-5409ab283/
+
+# Kevin's Instagram and LinkedIn were empty href="" in the old markup, which
+# linked back to the same page. They are omitted until real URLs are available.
+- id: kevin-li
+  name: Kevin Li
+  role: Special Operations
+  group: exec
+  year: 2024-2025
+  photo: ../../assets/img/team/2024-2025/kevin-li.jpg
+  bio: >-
+    Kevin is the Special Operations Manager for 2024-2025. He handles a variety
+    of roles, including programming, building, and researching new ideas for
+    implementation.
+  socials:
+    facebook: https://www.facebook.com/profile.php?id=100092421590519
+
+- id: trs-murtaza-haque
+  name: Murtaza Haque
+  role: TRS
+  group: committees
+  year: 2024-2025
+  photo: ../../assets/img/trs/murtaza-haque.jpg
+  bio: >-
+    I focus on repairing mainly bikes and certain types of circuitry. I also
+    meddle with computer repair a little bit.
+  socials:
+    facebook: https://www.facebook.com/profile.php?id=100093926327175
+    instagram: https://www.instagram.com/murtazahaque/
+    linkedin: https://www.linkedin.com/in/murtaza-haque786
+
+# NOTE: Ria's Facebook and LinkedIn in the old markup pointed at Luis Espinosa's
+# profiles — almost certainly a copy-paste error. They are omitted rather than
+# carried over. Add the correct URLs here.
+- id: trs-ria-nair
+  name: Ria Nair
+  role: TRS
+  group: committees
+  year: 2024-2025
+  photo: ../../assets/img/trs/ria-nair.jpg
+  bio: I handle the logistics and design side of TAMS Repair Society.
+  socials:
+    instagram: https://www.instagram.com/rianair5/

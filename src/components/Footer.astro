@@ -1,0 +1,72 @@
+---
+import { url } from '../lib/url';
+import { Icon } from 'astro-icon/components';
+import { socials } from '../lib/site';
+
+const usefulLinks = [
+  { label: 'Home', href: url('/#hero') },
+  { label: 'About', href: url('/#about') },
+  { label: 'Robots', href: url('/#robot') },
+  { label: 'Committees', href: url('/#committees') },
+  { label: 'Outreach', href: url('/outreach/') },
+  { label: 'Team', href: url('/#team') },
+  { label: 'Sponsors', href: url('/#sponsors') },
+  { label: 'Calendar', href: url('/calendar/') },
+  { label: 'Contact', href: url('/#contact') },
+  { label: 'Donate', href: url('/donations/') },
+];
+
+const year = new Date().getFullYear();
+---
+
+<footer id="footer">
+  <div class="footer-top">
+    <div class="container">
+      <div class="row gy-4">
+        <div class="col-lg-4 col-md-6 footer-contact">
+          <h3>TAMSformers</h3>
+          <p>
+            1705 W. Sycamore Street <br />
+            Denton, TX 76201<br />
+            United States <br /><br />
+            <strong>Phone:</strong> <a href="tel:+19403310050">(940) 331-0050</a><br />
+            <strong>Email:</strong> <a href="mailto:tamsformers@gmail.com">tamsformers@gmail.com</a><br />
+          </p>
+        </div>
+
+        <div class="col-lg-4 col-md-6 footer-links">
+          <h4>Useful Links</h4>
+          <ul>
+            {
+              usefulLinks.map((link) => (
+                <li>
+                  <Icon name="bx:chevron-right" /> <a href={link.href}>{link.label}</a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <div class="col-lg-4 col-md-6 footer-links">
+          <h4>Our Social Networks</h4>
+          <p>Here are links to our various social media accounts</p>
+          <div class="social-links mt-3">
+            {
+              socials.map((social) => (
+                <a href={social.href} target="_blank" rel="noopener" aria-label={social.name}>
+                  <Icon name={social.icon} />
+                </a>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="container">
+      &copy; Copyright {year} <strong>TAMSformers</strong>. All Rights Reserved
+    </div>
+  </div>
+</footer>
