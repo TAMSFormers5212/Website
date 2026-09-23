@@ -1,0 +1,234 @@
+---
+interface Winner {
+  name: string;
+  imageSRC: string;
+  additionalDetails: string;
+  position: number;
+}
+
+// TODO: Add read request to the actual data in order of first - last
+const winnerDetails: Winner[] = [
+  {
+    name: "Jayden",
+    imageSRC: "/jayden.jpg", // Ensure valid paths
+    additionalDetails: "Lock In!!!",
+    position: 1
+  },
+  {
+    name: "Kaushik",
+    imageSRC: "/kaushik.jpg",
+    additionalDetails: "Test During Competition!!!",
+    position: 2
+  },
+  {
+    name: "Random",
+    imageSRC: "/random.jpg",
+    additionalDetails: "Random Potential",
+    position: 3
+  }
+];
+
+const order_of_display: number[] = [1, 0, 2];
+---
+
+<section class="wholeContainer f1-track">
+  <div class="raceTrack"></div>
+  <div class="winnersContainer">
+    {
+    order_of_display.map((index) => {
+        const currentValue = winnerDetails[index];
+
+        return (
+          <div class="container animate-on-scroll">
+            <p class="textHeader">#{currentValue.position} {currentValue.name}</p>
+            <div class="mainContentContainer">
+              <img class="image" src={currentValue.imageSRC} alt={currentValue.name} />
+            </div>
+            <div class="additionalContentContainer">
+              <p class="textBody">{currentValue.additionalDetails}</p>
+            </div>
+          </div>
+        );
+      })
+    }
+  </div>
+</section>
+
+<style>
+  /* The main container acts as the race track */
+  .wholeContainer {
+    display: flex;
+    flex-direction: column;
+    padding-top: 0vh;
+    gap: 20px;
+    justify-content: flex-start;
+    background-color: #1e1e1e;
+    height: 325vh;
+  }
+
+  .f1-track {
+    /* Use a solid fallback color, not a gradient, for background-color */
+    background-color: #111111;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+    
+    background-image: 
+      /* 1 & 2: Left and Right F1 Kerbs */
+      repeating-linear-gradient(-45deg, #e10600 0, #e10600 25px, #ffffff 25px, #ffffff 50px),
+      repeating-linear-gradient(45deg, #e10600 0, #e10600 25px, #ffffff 25px, #ffffff 50px),
+      
+      /* 3 & 4: Sharp, reflective glass cracks using hard-stop gradients */
+      linear-gradient(45deg, transparent 49.8%, rgba(255, 255, 255, 0.15) 49.8%, rgba(255, 255, 255, 0.15) 50.2%, transparent 50.2%),
+      linear-gradient(-70deg, transparent 49.8%, rgba(255, 255, 255, 0.1) 49.8%, rgba(255, 255, 255, 0.1) 50.2%, transparent 50.2%),
+      
+      /* 5: Large dark metallic mirror facets */
+      conic-gradient(from 120deg at 40% 50%, #1e1e1e 0deg, #2a2a2a 45deg, #111111 110deg, #333333 160deg, #0a0a0a 210deg, #242424 270deg, #1a1a1a 320deg, #1e1e1e 360deg);
+    
+    /* You must define exactly 5 sizes, positions, and repeats to match the 5 images above */
+    background-size: 
+      30px 100%, 
+      30px 100%, 
+      180px 180px, 
+      260px 200px, 
+      100% 100%;
+      
+    background-position: 
+      left top, 
+      right top, 
+      0 0, 
+      0 0, 
+      center center;
+      
+    background-repeat: 
+      no-repeat, 
+      no-repeat, 
+      repeat, 
+      repeat, 
+      no-repeat;
+      
+    background-attachment: 
+      scroll, 
+      scroll, 
+      fixed, 
+      fixed, 
+      fixed;
+  }
+
+  .raceTrack {
+    width: 100%;
+    height: 70vh;
+    margin-top: 0vh;
+    background: repeating-conic-gradient(#1a1a1a 0% 25%, #f1f1f1 0% 50%) 50% / 50px 50px;
+  }
+
+  .winnersContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 10vw;
+    justify-content: center;
+    height: 60vh;
+  }
+
+  /* Individual winner cards */
+  .container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+    border-radius: 8px;
+    margin: 0px;
+    width: 20%;
+    max-width: 200px;
+    height: fit-content;
+    
+    /* ANIMATION STARTING STATE */
+    opacity: 0;
+    transform: translateY(250px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+
+  /* ANIMATION ENDING STATE (Triggered via JS) */
+  .container.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Stagger the animations so they arrive one after the other */
+  .container:nth-child(1) { transition-delay: 0.1s; border-color: silver; margin-top: 75vh; }
+  .container:nth-child(2) { transition-delay: 0.3s; border-color: gold; margin-top: 0px; }
+  .container:nth-child(3) { transition-delay: 0.5s; border-color: #cd7f32; margin-top: 125vh; }
+
+  .mainContentContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 80vh;
+    width: 30vw;
+    max-width: 400px;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+  }
+
+  .container:nth-child(1) .mainContentContainer { background-image: url("/coolF1Car1.png");}
+  .container:nth-child(2) .mainContentContainer { background-image: url("/coolF1Car3.png");}
+  .container:nth-child(3) .mainContentContainer { background-image: url("/coolF1Car2.png");}
+
+  .container:nth-child(1) .image { border-color: silver; }
+  .container:nth-child(2) .image { border-color: gold; }
+  .container:nth-child(3) .image { border-color: #cd7f32; }
+
+  .additionalContentContainer {
+    width: 100%;
+    height: 30px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .image {
+    width: 20%;
+    height: 25%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #ccc;
+  }
+
+  .textHeader {
+    font-weight: bold;
+    color: #FFFFFF;
+    font-size: 1.2rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  .textBody {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #FFFFFF;
+    width: fit-content;
+    text-align: center;
+  }
+</style>
+
+<script>
+  const setupAnimations = () => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // Play animation when scrolled into view
+          entry.target.classList.add('is-visible');
+        }
+      });
+    }, {
+      threshold: 0.05 
+    });
+
+    const animatedElements = document.querySelectorAll('.animate-on-scroll');
+    animatedElements.forEach(el => observer.observe(el));
+  };
+
+  setupAnimations();
+  document.addEventListener('astro:after-swap', setupAnimations);
+</script>
