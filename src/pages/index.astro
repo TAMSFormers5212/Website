@@ -15,6 +15,7 @@ import compPhoto from '../assets/img/events/competition-2025.webp';
 import serviceShowcase from '../assets/img/outreach/service-showcase.webp';
 import goKartTeam from '../assets/img/outreach/go-kart-team.webp';
 import trifoldTable from '../assets/img/outreach/trifold-table.jpg';
+import WinnerShowcase from '../components/WinnerShowcase.astro';
 
 type Member = CollectionEntry<'team'>;
 const byName = (a: Member, b: Member) => a.data.name.localeCompare(b.data.name);
@@ -419,5 +420,6 @@ const filters = ['*', ...new Set(robots.map((robot) => robot.data.filter))];
         </div>
       </div>
     </section>
+    <WinnerShowcase />
   </main>
 </Base>
