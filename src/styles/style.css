@@ -846,14 +846,6 @@ section {
   margin-bottom: 20px;
 }
 .tier .price sup { font-size: 20px; top: -16px; }
-.tier .price span {
-  display: block;
-  margin-top: 8px;
-  font: 600 13px/1.4 var(--heading);
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--ink-500);
-}
 .tier ul {
   list-style: none;
   padding: 0;
